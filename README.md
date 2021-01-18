@@ -8,27 +8,27 @@ This document serves as a quick introduction to Kuka IIWA Robot and controlling 
 - [Programming the Robot](#programming-the-robot)
     - [Kuka Sunrise WorkBench](#kuka-sunrise-workbench)
     - [FRI](#fri)
-- Controlling from ROS    
-- Drake Concepts    
-- Drake drivers
-    - Java App for Sunrise
-    - kuka_driver LCM
--  LCM interface
- - Drake Intro
-- Robot hardware Interface/Drake-LCM Interface
-    - Loading a custom robot model
-    - Reading from hardware
-    - writing to hardware
-- Joint Control
-- Visualizing the robot state in Drake visualizers
-- Adding an end effector to the model
-- Forward Kinematics
-- Inverse Kinematics
-- Estimating Cartesian Velocities
-- Cartesian velocity control
-- Estimating Cartesian forces
-- Hybrid Force-Position control
-- Motion Planning -  Generating Trajectories 
+- [Controlling IIWA from ROS](#controlling-iiwa-from-ros) 
+- [Drake Concepts](#)
+- [Drake drivers](#)
+    - [Java App for Sunrise](#)
+    - [kuka_driver LCM](#)
+-  [LCM interface](#)
+ - [Drake Intro](#)
+- [Robot hardware Interface/Drake-LCM Interface](#)
+    - [Loading a custom robot model](#)
+    - [Reading from hardware](#)
+    - [writing to hardware](#)
+- [Joint Control](#)
+- [Visualizing the robot state in Drake visualizers](#)
+- [Adding an end effector to the model](#)
+- [Forward Kinematics](#)
+- [Inverse Kinematics](#)
+- [Estimating Cartesian Velocities](#)
+- [Cartesian velocity control](#)
+- [Estimating Cartesian forces](#)
+- [Hybrid Force-Position control](#)
+- [Motion Planning -  Generating Trajectories](#)
 
 ## **Introduction**
 
@@ -69,5 +69,53 @@ After loading the  applications, the desired one has to be selected and executed
  
 ### **FRI**  
   
-  FRI stands for "Fast Research Interface", which is an addon provided by Kuka, which enables real time control of the robot system at the lowest level possible. This requires control signals be generated in an external computer and sent over a specific Ethernet port called KONI -  Kuka Optional Network Interface. The FRI is not enabled out of the box and has to be installed and enables through the Sunrise workbench. The default IP address of the FRI interface is ```192.170.10.2```
+  FRI stands for "Fast Research Interface", which is an addon provided by Kuka, which enables real time control of the robot system at the lowest level possible. This requires control signals be generated in an external computer and sent over a specific Ethernet port called KONI -  Kuka Optional Network Interface. The FRI is not enabled out of the box and has to be installed and enabled through the Sunrise workbench. The default IP address of the FRI interface is ```192.170.10.2```
 
+  Kuka provides FRI-Client libararies in C++ and Java, which can be found inside the examples directory after the installation of FRI library in Sunrise WorkBench. The C++ libraries can be found in the file named ```FRI-Client-SDK_Cpp.zip```. It can be used to build applications talks with Kuka controller over FRI.
+
+  Drake uses the FRI interface to control the IIWA from an external computer.  
+
+## **Controlling IIWA from ROS**
+
+The [```iiwa_stack```](https://github.com/IFL-CAMP/iiwa_stack) package can be used to interface IIWA fron ROS. It uses the Smart Servoing functionality over the KLI network interface. 
+
+The ROSJava nodes running on the robot as a Sunrise RobotApplication sends data and receives commands from a ROS master running on the external PC. The [wiki](https://github.com/IFL-CAMP/iiwa_stack/wiki) provides detailed instructions on getting ROS working
+
+## **Drake Concepts**
+
+TODO
+
+## **Drake drivers**
+TODO
+### **Java App for Sunrise**
+TODO
+### **kuka_driver LCM**
+TODO
+## **LCM interface**
+TODO
+
+## **Robot hardware Interface/Drake-LCM Interface**
+    - Loading a custom robot model
+    - Reading from hardware
+    - writing to hardware
+
+## **Joint Control**
+TODO
+## **Visualizing the robot state in Drake visualizers**
+TODO
+## **Adding an end effector to the model**
+TODO
+## **Forward Kinematics**
+TODO
+## **Inverse Kinematics**
+TODO
+##  **Estimating Cartesian Velocities**
+TODO
+## **Cartesian velocity control**
+TODO
+## **Estimating Cartesian forces**
+TODO
+## **Hybrid Force-Position control**
+TODO
+## **Motion Planning and Generating Trajectories** 
+TODO
