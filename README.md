@@ -167,25 +167,45 @@ TODO
 ### **IIWA Manipulation station**
 ### **Custom Manipulation station**
 ## **Joint Control**
+[```example_joint_slider.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/example_joint_slider.py)
 
 In the [```example_joint_slider.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/example_joint_slider.py) example, we make use of the drake ```JointSliders``` system to control the joint values of the robot. The output port of the ```JointSliders``` system is connected through a ```FirstOrderLowPassFilter``` to the ```iiwa_position``` port of the ```IiwaHardwareInterface``` manipulation station.
 
 
 ## **Visualizing the robot state in Drake visualizers**
-TODO
+[```example_iiwa_visualize.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/example_iiwa_visualize.py)
+
+Drake has multiple visualizers and uses the SceneGraph method to output the visualizations. By default, Drake comes with a VTK based visualizer which is located in ```/opt/drake/bin/drake-visualizer```. We have to launch the viuslizer before running the simulation.
+
+Drake also has a Meshcat based visualizer which can display the output in a browser window.
+
+In the [```example_iiwa_visualize.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/example_iiwa_visualize.py) example,  the ```MultibodyPositionToGeometryPose``` system takes in the joint positions of the robot and outputs the pose output required by the ```SceneGraph``` system.
+
 ## **Adding an end effector to the model**
-TODO
+[```example_iiwa_end_effector.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/example_iiwa_visualize.py)
+
+The end effector model can be imported as a URDF/SDF file and be added to the multibody plant before finalizing and initializing it. 
+
+In the example, we use a simple one finger defined in [```models/one_finger.urdf```](#) and adds it to out manipulation system. The [```example_iiwa_end_effector.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/example_iiwa_visualize.py) shows this functionality
 ## **Forward Kinematics**
-TODO
+
+[```example_FK.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/example_FK.py) 
+
+Given the joint angles of the robot, we can set the corresponding joint position of the multibodyplant and then estimate the position of the end effector in the world/with respect to any other frame. The ```EvalBodyPoseInWorld``` function can be used to evaluate the position of the body in the world. Dake solves the kinematics automatically in the background. The example is available in [```example_FK.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/example_FK.py) 
 ## **Inverse Kinematics**
-TODO
+[```example_IK.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/example_IK.py) 
+
+Drake has a rich [Inverse kinematics](https://drake.mit.edu/doxygen_cxx/classdrake_1_1multibody_1_1_inverse_kinematics.html) library, based on numerical optimization. It also allows for addition of various types of constraints
+
 ##  **Estimating Cartesian Velocities**
-TODO
+[```example_velocity_estimate.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/example_velocity_estimate.py)
+
+
 ## **Cartesian velocity control**
-TODO
+[```example_velocity_control.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/example_velocity_control.py)
 ## **Estimating Cartesian forces**
-TODO
+[```example_force_estimate.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/example_force_estimate.py)
 ## **Hybrid Force-Position control**
-TODO
+[```example_force_feedforward.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/example_force_feedforward.py)
 ## **Motion Planning and Generating Trajectories** 
 TODO
