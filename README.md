@@ -13,7 +13,9 @@ This document serves as a quick introduction to Kuka IIWA Robot and controlling 
 - [Drake drivers](#)
     - [Java App for Sunrise](#)
     - [kuka_driver LCM](#)
--  [LCM interface](#)
+-  [LCM](#lcm)
+    - [LCM Introduction](#)
+    - [IIWA-LCM Interface](#)
  - [Drake Intro](#)
 - [Robot hardware Interface/Drake-LCM Interface](#)
     - [Loading a custom robot model](#)
@@ -79,18 +81,7 @@ After loading the  applications, the desired one has to be selected and executed
 
 The [```iiwa_stack```](https://github.com/IFL-CAMP/iiwa_stack) package can be used to interface IIWA fron ROS. It uses the Smart Servoing functionality over the KLI network interface. 
 
-The ROSJava nodes running on the robot as a Sunrise RobotApplication sends data and receives commands from a ROS master running on the external PC. The [wiki](https://github.com/IFL-CAMP/iiwa_stack/wiki) provides detailed instructions on getting ROS working
-
-## **Drake Concepts**
-
-[Drake](https://drake.mit.edu/)is a C++ toolbox which can be used to model dynamical systems, solve mathematical problems and include multibody kinematics and dynamics. It also has a Python interface which is used exclusively in this document.
-
-Drake uses an a network of systems which are interconnected through input and output ports. 
-
-## **Drake drivers**
-The [Drake IIWA Driver](https://github.com/RobotLocomotion/drake-iiwa-driver) allows for the interfacing of IIWA with Drake. This requires mainly two steps
- - Creating the Java Application
- - Compiling the ```kuka_driver```
+The ROSJava nodes running on the robot as a Sunrise RobotApplication sends data and receives commands from a ROS master running on the external PC. The [wiki](https://github.com/IFL-CAMP/iiwa_stack/wiki) provides detailed instructions on getting ROS workinggit@github.com:achuwilson/pydrake-manipulator-docs.giter```
 ### **Drake IIWA Java Application**
  The Java application has to be compiled with the Kuka Sunrise Workbench and uploaded to the robot. The application opens an FRI connection to which the ```kuka_driver``` running on an external computer connects to.
 
@@ -109,8 +100,18 @@ The [Drake IIWA Driver](https://github.com/RobotLocomotion/drake-iiwa-driver) al
 The ```kuka_driver``` runs on the external computer, connects to the Java application running on the robot and provides an LCM interface to read/write data.
 
 It has to be compiled as in this [documentation](https://github.com/RobotLocomotion/drake-iiwa-driver/blob/master/README.md) and requires FRI client SDK for compilation.
-## **LCM interface**
-TODO
+## **LCM**
+[LCM](https://lcm-proj.github.io/) stands for Lightweight Communications and Marshalling. It is a set of libraries that can provide publish/subscribe message passing capabilities for different applications.
+
+```kuka_driver``` provides read/write interface to the IIWA thriugh LCM messages. It generates three LCM messsage channels
+ - ```IIWA_STATUS``` of the type ```lcmt_iiwa_status```, defined in [```lcmt_iiwa_status.lcm```](https://github.com/RobotLocomotion/drake/blob/master/lcmtypes/lcmt_iiwa_status.lcm)
+ - ```IIWA_COMMAND``` of the type ```lcmt_iiwa_command```, defined in [lcmt_iiwa_command.lcm](https://github.com/RobotLocomotion/drake/blob/master/lcmtypes/lcmt_iiwa_command.lcm)
+ - ```IIWA_STATUS_TELEMETRY``` of the type ```lcmt_iiwa_status_telemetry```, defined in [lcmt_iiwa_status_telemetry.lcm](https://github.com/RobotLocomotion/drake/blob/master/lcmtypes/lcmt_iiwa_status_telemetry.lcm)
+
+
+
+ These message types are
+We are using the Python 
 
 ## **Robot hardware Interface/Drake-LCM Interface**
     - Loading a custom robot model
