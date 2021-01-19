@@ -38,6 +38,13 @@ This document serves as a quick introduction to Kuka IIWA Robot and controlling 
 Kuka LBR IIWA is a collaborative robot manipulator which has got excellent torque control capabilities in addition to the default position control features. This enables capabilities like impedence control which is much benefitial when the  robot has to interact with noisy environment models, where pure position control can break things (or even the robot)
 
 ## **Kuka System Architecture** 
+The following documents give a detailed overview of the Kuka IIWA Robot systems.
+ - [KUKA Sunrise.OS 1.16Operating Instructions for End Users](https://indianinstituteofscience-my.sharepoint.com/:b:/g/personal/achuwilson_iisc_ac_in/EV4iYsOWqzJDo67tXQCS5RkBYui1geiQtkUp61vTxEKwrA) 
+ - [KUKA Sunrise CabinetOperating Instructions](https://indianinstituteofscience-my.sharepoint.com/:b:/g/personal/achuwilson_iisc_ac_in/Edw4l1pf6npHoR7z2O2gx-IB9v7VA7hakrdIowxQbYPMbA?e=wyLi8R)
+ - [System SoftwareKUKA Sunrise.OS 1.16KUKA Sunrise.Workbench 1.16Operating and Programming Instructions for System Integrators](https://indianinstituteofscience-my.sharepoint.com/:b:/g/personal/achuwilson_iisc_ac_in/ETb2S5FZac5DiL733qOmhicB3BOZzJFAMyjdIQaC3mI6rA?e=9Ne5Gq)
+
+NOTE: the linked documents are not shared publically and require IISc login
+
 The Kuka sunrise cabinet controller has an industrial PC running  Kuka's version of Windows CE called Sunrise OS and a realtime OS. The sunrise OS handles the user program, GUI etc and is accessible to the user. The realtime part is hidden from the user and controls the low level motor drivers and other hardware interfaces. 
 
 Kuka Smartpad, the handheld controller is just a system which shows the remote desktop view of the above mentioned Sunrise OS. Conecting an external monitor to the DVI port on the back side of the controller box shows the same Smartpad GUI. It is also possible to access the Smartpad GUI using Remote Desktop tools. The login credentials for the remote desktop are:
@@ -124,7 +131,11 @@ By default, ```kuka_driver``` publishes/ subscribes these messages at 200Hz
 In order to add a custom robot interface, we have to first create message type definitions specific to the robot configuration. This would involve the status message to get feedback from the robot and the  command message to issue control commands to the robot.
 
 Once we have defined the custom message types, we have to create a driver, which will communicate with the robot hardware(such as through serial port/ethernet etc) and exchange the data with the LCM system as LCM messages
-
+## **Drake**
+### Some drake tutorials
+- slider system print
+- discrete time update system
+- discrete callback system
 ## **LCM - Drake Interface**
 Drake contains the following systems for communicating with LCM
 
@@ -163,7 +174,7 @@ The ```IiwaCommandSender``` has a single output which has to be connected to the
 Similar to the IIWA example, systems that parse the LCM message and provide inputs/outputs to the Drake systems have to be implemented
 
 ## **Manipulation Station**
-TODO
+The manipulation station system brings together the hardware interface systems, multibodyencapsulates ```IiwaCommandSender``` and ```IiwaStatusReceiver``` subsystems that interface
 ### **IIWA Manipulation station**
 ### **Custom Manipulation station**
 ## **Joint Control**
