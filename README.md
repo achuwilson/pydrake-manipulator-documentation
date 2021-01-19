@@ -9,7 +9,7 @@ This document serves as a quick introduction to Kuka IIWA Robot and controlling 
     - [Kuka Sunrise WorkBench](#kuka-sunrise-workbench)
     - [FRI](#fri)
 - [Controlling IIWA from ROS](#controlling-iiwa-from-ros) 
-- [Drake Concepts](#)
+- [Drake Concepts](#drake-concepts)
 - [Drake drivers](#)
     - [Java App for Sunrise](#)
     - [kuka_driver LCM](#)
@@ -83,14 +83,32 @@ The ROSJava nodes running on the robot as a Sunrise RobotApplication sends data 
 
 ## **Drake Concepts**
 
-TODO
+[Drake](https://drake.mit.edu/)is a C++ toolbox which can be used to model dynamical systems, solve mathematical problems and include multibody kinematics and dynamics. It also has a Python interface which is used exclusively in this document.
+
+Drake uses an a network of systems which are interconnected through input and output ports. 
 
 ## **Drake drivers**
-TODO
-### **Java App for Sunrise**
-TODO
-### **kuka_driver LCM**
-TODO
+The [Drake IIWA Driver](https://github.com/RobotLocomotion/drake-iiwa-driver) allows for the interfacing of IIWA with Drake. This requires mainly two steps
+ - Creating the Java Application
+ - Compiling the ```kuka_driver```
+### **Drake IIWA Java Application**
+ The Java application has to be compiled with the Kuka Sunrise Workbench and uploaded to the robot. The application opens an FRI connection to which the ```kuka_driver``` running on an external computer connects to.
+
+ There are two Java applications
+  - DrakeFRIPositionDriver 
+  - DrakeFRITorqueDriver.
+
+  The DrakeFRIPositionDriver as the name  implies allows controlling the robot in position control mode, taking in joint position commands. 
+
+  The DrakeFRITorqueDriver allows for the control of the robot in impedance control mode and takes in joint position as well as joint feedforward torque comands
+
+  Both the drivers output robot status like joint positions, velocities, torques etc
+
+  
+### **kuka_driver** 
+The ```kuka_driver``` runs on the external computer, connects to the Java application running on the robot and provides an LCM interface to read/write data.
+
+It has to be compiled as in this [documentation](https://github.com/RobotLocomotion/drake-iiwa-driver/blob/master/README.md) and requires FRI client SDK for compilation.
 ## **LCM interface**
 TODO
 
