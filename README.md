@@ -100,26 +100,77 @@ The ROSJava nodes running on the robot as a Sunrise RobotApplication sends data 
 The ```kuka_driver``` runs on the external computer, connects to the Java application running on the robot and provides an LCM interface to read/write data.
 
 It has to be compiled as in this [documentation](https://github.com/RobotLocomotion/drake-iiwa-driver/blob/master/README.md) and requires FRI client SDK for compilation.
+
+After compilation, the ```kuka_driver``` should be run in background 
 ## **LCM**
+
 [LCM](https://lcm-proj.github.io/) stands for Lightweight Communications and Marshalling. It is a set of libraries that can provide publish/subscribe message passing capabilities for different applications.
 
+### **IIWA-LCM Interface**
 ```kuka_driver``` provides read/write interface to the IIWA thriugh LCM messages. It generates three LCM messsage channels
  - ```IIWA_STATUS``` of the type ```lcmt_iiwa_status```, defined in [```lcmt_iiwa_status.lcm```](https://github.com/RobotLocomotion/drake/blob/master/lcmtypes/lcmt_iiwa_status.lcm)
- - ```IIWA_COMMAND``` of the type ```lcmt_iiwa_command```, defined in [lcmt_iiwa_command.lcm](https://github.com/RobotLocomotion/drake/blob/master/lcmtypes/lcmt_iiwa_command.lcm)
- - ```IIWA_STATUS_TELEMETRY``` of the type ```lcmt_iiwa_status_telemetry```, defined in [lcmt_iiwa_status_telemetry.lcm](https://github.com/RobotLocomotion/drake/blob/master/lcmtypes/lcmt_iiwa_status_telemetry.lcm)
+ - ```IIWA_COMMAND``` of the type ```lcmt_iiwa_command```, defined in [```lcmt_iiwa_command.lcm```](https://github.com/RobotLocomotion/drake/blob/master/lcmtypes/lcmt_iiwa_command.lcm)
+ - ```IIWA_STATUS_TELEMETRY``` of the type ```lcmt_iiwa_status_telemetry```, defined in [```lcmt_iiwa_status_telemetry.lcm```](https://github.com/RobotLocomotion/drake/blob/master/lcmtypes/lcmt_iiwa_status_telemetry.lcm)
+
+By default, ```kuka_driver``` publishes/ subscribes these messages at 200Hz
+
+```IIWA_STATUS``` provides the robot joint status which includes joint position, velocities and torques. An example which subscribes to the ```IIWA_STATUS``` and prints the output is available in [```lcm_examples/iiwa-lcm-listener.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/lcm_examples/iiwa-lcm-listener.py)
+
+```IIWA_COMMAND``` is used to command joint positions with an optional feed forward joint torque. An example which subscribes to ```IIWA_STATUS``` to estimate the current robot configuration and move joint 7 incrementally is available in [```lcm_examples/iiwa-lcm-publisher.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/lcm_examples/iiwa-lcm-publisher.py)
+
+```IIWA_STATUS_TELEMETRY``` provides timing information, which can be used to estimate the latency in the FRI communication between the external computer and the robot controller.
+
+### **Custom Robot - LCM Interface**
+In order to add a custom robot interface, we have to first create message type definitions specific to the robot configuration. This would involve the status message to get feedback from the robot and the  command message to issue control commands to the robot.
+
+Once we have defined the custom message types, we have to create a driver, which will communicate with the robot hardware(such as through serial port/ethernet etc) and exchange the data with the LCM system as LCM messages
+
+## **LCM - Drake Interface**
+Drake contains the following systems for communicating with LCM
+
+- ```LcmInterfaceSystem```
+- ```LcmSubscriberSystem```
+- ```LcmPublisherSystem```
+
+The ```LcmInterfaceSystem``` has no inputs nor outputs nor state nor parameters; it declares only an update event that pumps LCM messages into their subscribers if the LCM stack has message(s) waiting. The subscribers will then update their outputs using their own declared events
+
+The ```LcmSubscriberSystem``` subscribes to the LCM data stream and outputs the recived data through a single output port
+
+The ```LCMPublisherSystem``` has a single input port and outputs the received data to the LCM data stream at a specified update rate.
+
+### **IIWA-Drake Interface** 
+
+The IIWA - Drake hardware interface consists of two systems
+- ```IiwaStatusReceiver``` defined in [```iiwa_status_receiver.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/iiwa_status_receiver.py)
+- ```IiwaCommandSender``` defined in  [```iiwa_command_sender.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/iiwa_command_sender.py)
 
 
+The ```IiwaStatusReceiver``` has a single input, which has to be  connected to the output of ```LcmSubscriberSystem``` and has the following 7 vector valued outputs:
 
- These message types are
-We are using the Python 
+        - position_commanded
+        - position_measured
+        - velocity_estimated
+        - torque_commanded
+        - torque_measured
+        - torque_external
 
-## **Robot hardware Interface/Drake-LCM Interface**
-    - Loading a custom robot model
-    - Reading from hardware
-    - writing to hardware
+The ```IiwaCommandSender``` has a single output which has to be connected to the input of the ```LcmPublisherSystem```. It has the following two inputs
 
-## **Joint Control**
+        - position
+        - torque
+### **Custom Robot - Drake Interface**
+
+Similar to the IIWA example, systems that parse the LCM message and provide inputs/outputs to the Drake systems have to be implemented
+
+## **Manipulation Station**
 TODO
+### **IIWA Manipulation station**
+### **Custom Manipulation station**
+## **Joint Control**
+
+In the [```example_joint_slider.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/example_joint_slider.py) example, we make use of the drake ```JointSliders``` system to control the joint values of the robot. The output port of the ```JointSliders``` system is connected through a ```FirstOrderLowPassFilter``` to the ```iiwa_position``` port of the ```IiwaHardwareInterface``` manipulation station.
+
+
 ## **Visualizing the robot state in Drake visualizers**
 TODO
 ## **Adding an end effector to the model**
