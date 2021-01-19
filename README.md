@@ -203,6 +203,9 @@ In the example, we use a simple one finger defined in [```models/one_finger.urdf
 [```example_FK.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/example_FK.py) 
 
 Given the joint angles of the robot, we can set the corresponding joint position of the multibodyplant and then estimate the position of the end effector in the world/with respect to any other frame. The ```EvalBodyPoseInWorld``` function can be used to evaluate the position of the body in the world. Dake solves the kinematics automatically in the background. The example is available in [```example_FK.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/example_FK.py) 
+
+![](images/fk_system.png)
+
 ## **Inverse Kinematics**
 [```example_IK.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/example_IK.py) 
 
