@@ -200,12 +200,20 @@ Drake has a rich [Inverse kinematics](https://drake.mit.edu/doxygen_cxx/classdra
 ##  **Estimating Cartesian Velocities**
 [```example_velocity_estimate.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/example_velocity_estimate.py)
 
+The cartesian velocities are estimated using the ```CalcJacobianSpatialVelocity``` method. It is then multiplied with the joint velocities to get the end effector velocity
 
 ## **Cartesian velocity control**
 [```example_velocity_control.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/example_velocity_control.py)
+
+A ```PseudoInverseVelocityController``` is implemented, which calculates the joint velocities from the desired end effector velocities and commands them
+
 ## **Estimating Cartesian forces**
 [```example_force_estimate.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/example_force_estimate.py)
+
+IIWA comes with joint torque sensors at all the 7 joints. This example uses jacobian transpose to estimate the forces and wrenches in cartesian space at the end effector from the measured joint torques. The accuracy of the system is approximateely 5 N 
 ## **Hybrid Force-Position control**
 [```example_force_feedforward.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/example_force_feedforward.py)
+
+This example makes use of the jacobian transpose pseudo inverse to calculate the feed forward torque for each joint of the IIWA. It can then be controlled along with the position control, resulting in a hybrid force-position control system
 ## **Motion Planning and Generating Trajectories** 
 TODO
