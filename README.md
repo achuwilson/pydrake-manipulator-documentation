@@ -211,11 +211,19 @@ In the [```example_joint_slider.py```](https://github.com/achuwilson/pydrake_iiw
 ## **Visualizing the robot state in Drake visualizers**
 [```example_iiwa_visualize.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/example_iiwa_visualize.py)
 
-Drake has multiple visualizers and uses the SceneGraph method to output the visualizations. By default, Drake comes with a VTK based visualizer which is located in ```/opt/drake/bin/drake-visualizer```. We have to launch the viuslizer before running the simulation.
+Drake has multiple visualizers and uses the SceneGraph method to output the visualizations. By default, Drake comes with a VTK based visualizer which is located in ```/opt/drake/bin/drake-visualizer```. We have to launch the visualizer before running the simulation.
 
-Drake also has a Meshcat based visualizer which can display the output in a browser window.
+Drake also has a Meshcat based visualizer which can display the output in a browser window. Run ```meshcat-server``` present in the same directory. Meshcat visualizer is greatly helpful when running Drake as IPython notebooks in Google Colab
 
-In the [```example_iiwa_visualize.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/example_iiwa_visualize.py) example,  the ```MultibodyPositionToGeometryPose``` system takes in the joint positions of the robot and outputs the pose output required by the ```SceneGraph``` system.
+The system diagram of the example is as follows:
+
+![](images/visualize_system.png)
+
+In the [```example_iiwa_visualize.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/example_iiwa_visualize.py) example,  the ```MultibodyPositionToGeometryPose``` system takes in the joint positions of the robot and outputs the pose output required by the ```SceneGraph``` system. The ```DrakeVisualizer``` and ```meshcat_visualizer``` queries the scenegraph system and updates the rendering.
+
+The DrakeVisualizer looks as follows:
+
+![](images/drake-visualizer.png)
 
 ## **Adding an end effector to the model**
 [```example_iiwa_end_effector.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/example_iiwa_visualize.py)
