@@ -145,20 +145,44 @@ Drake contains the following systems for communicating with LCM
 - ```LcmSubscriberSystem```
 - ```LcmPublisherSystem```
 
+
+### **IIWA-Drake Interface** 
+
+The IIWA - Drake hardware interface consists of two systems
+- ```IiwaStatusReceiver``` defined in [```iiwa_status_receiver.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/iiwa_status_receiver.py)
+- ```IiwaCommandSender```
+
+
+### **Custom Robot - Drake Interface**
+
+Similar to the IIWA example, systems that parse the LCM message and provide inputs/outputs to the Drake systems have to be implemented
+
+## **Manipulation Station**
+The manipulation station consists of the IIWA robot, the Drake systems required to communicate and parse the data with the IIWA as well as other optional hardware such as cameras, grippers etc
+  
+The ```IiwaManipulationStation```, defined in [```iiwa_manipulation_station.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/iiwa_manipulation_station.py) is a ```Diagram``` which has to be included and initialized in the diagram created by the user, so as to communicate with the IIWA. It consists of the following systems:
+        
+        - LcmInterfaceSystem
+        - LcmSubscriberSystem
+        - LcmPublisherSystem
+        - IiwaCommandSender
+        - IiwaStatusReceiver
+        - MultibodyPlant
+
+
+The diagram of the manipulation system looks as follows:
+
+![](images/manipulation_station.png)
+
+
 The ```LcmInterfaceSystem``` has no inputs nor outputs nor state nor parameters; it declares only an update event that pumps LCM messages into their subscribers if the LCM stack has message(s) waiting. The subscribers will then update their outputs using their own declared events
 
 The ```LcmSubscriberSystem``` subscribes to the LCM data stream and outputs the recived data through a single output port
 
 The ```LCMPublisherSystem``` has a single input port and outputs the received data to the LCM data stream at a specified update rate.
 
-### **IIWA-Drake Interface** 
 
-The IIWA - Drake hardware interface consists of two systems
-- ```IiwaStatusReceiver``` defined in [```iiwa_status_receiver.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/iiwa_status_receiver.py)
-- ```IiwaCommandSender``` defined in  [```iiwa_command_sender.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/iiwa_command_sender.py)
-
-
-The ```IiwaStatusReceiver``` has a single input, which has to be  connected to the output of ```LcmSubscriberSystem``` and has the following 7 vector valued outputs:
+The ```IiwaStatusReceiver```, defined in [```iiwa_status_receiver.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/iiwa_status_receiver.py) parses the ```IIWA_STATUS``` LCM  message into the following vector valued outputs:
 
         - position_commanded
         - position_measured
@@ -167,18 +191,15 @@ The ```IiwaStatusReceiver``` has a single input, which has to be  connected to t
         - torque_measured
         - torque_external
 
-The ```IiwaCommandSender``` has a single output which has to be connected to the input of the ```LcmPublisherSystem```. It has the following two inputs
+The ```IiwaCommandSender```,  defined in  [```iiwa_command_sender.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/iiwa_command_sender.py) encodes the input into ```IIWA_COMMAND``` LCM message which is pubblished by the ```LcmSubscriberSystem```. It has the following two vector valued inputs accapting vectors of size 7.
 
         - position
         - torque
-### **Custom Robot - Drake Interface**
 
-Similar to the IIWA example, systems that parse the LCM message and provide inputs/outputs to the Drake systems have to be implemented
+ The ```MultibodyPlant``` models the external plant that has to be controlled and helps in the computation of its kinematics and dynamics.
 
-## **Manipulation Station**
-The manipulation station system brings together the hardware interface systems, multibodyencapsulates ```IiwaCommandSender``` and ```IiwaStatusReceiver``` subsystems that interface
 
-Exported inputs and outputs
+The input and output ports of the individual systems inside inside a diagram has to be exported to outside so that other drake systems can interface with the inner systems. The ```ExportOutput``` and ```ExportInput``` methods of ```DiagramBuilder``` are used for this.
 ### **IIWA Manipulation station**
 ### **Custom Manipulation station**
 ## **Joint Control**
