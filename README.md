@@ -38,13 +38,6 @@ This document serves as a quick introduction to Kuka IIWA Robot and controlling 
 Kuka LBR IIWA is a collaborative robot manipulator which has got excellent torque control capabilities in addition to the default position control features. This enables capabilities like impedence control which is much benefitial when the  robot has to interact with noisy environment models, where pure position control can break things (or even the robot)
 
 ## **Kuka System Architecture** 
-The following documents give a detailed overview of the Kuka IIWA Robot systems.
- - [KUKA Sunrise.OS 1.16Operating Instructions for End Users](https://indianinstituteofscience-my.sharepoint.com/:b:/g/personal/achuwilson_iisc_ac_in/EV4iYsOWqzJDo67tXQCS5RkBYui1geiQtkUp61vTxEKwrA) 
- - [KUKA Sunrise CabinetOperating Instructions](https://indianinstituteofscience-my.sharepoint.com/:b:/g/personal/achuwilson_iisc_ac_in/Edw4l1pf6npHoR7z2O2gx-IB9v7VA7hakrdIowxQbYPMbA?e=wyLi8R)
- - [System SoftwareKUKA Sunrise.OS 1.16KUKA Sunrise.Workbench 1.16Operating and Programming Instructions for System Integrators](https://indianinstituteofscience-my.sharepoint.com/:b:/g/personal/achuwilson_iisc_ac_in/ETb2S5FZac5DiL733qOmhicB3BOZzJFAMyjdIQaC3mI6rA?e=9Ne5Gq)
-
-NOTE: the linked documents are not shared publically and require IISc login
-
 The Kuka sunrise cabinet controller has an industrial PC running  Kuka's version of Windows CE called Sunrise OS and a realtime OS. The sunrise OS handles the user program, GUI etc and is accessible to the user. The realtime part is hidden from the user and controls the low level motor drivers and other hardware interfaces. 
 
 Kuka Smartpad, the handheld controller is just a system which shows the remote desktop view of the above mentioned Sunrise OS. Conecting an external monitor to the DVI port on the back side of the controller box shows the same Smartpad GUI. It is also possible to access the Smartpad GUI using Remote Desktop tools. The login credentials for the remote desktop are:
@@ -55,6 +48,14 @@ password: ```68kuka1secpw59```
 
 
 The user often connects to the robot over an Ethernet interface to pogram/control the robot. Additional interfaces like EtherCat, profinet are also available. 
+
+
+The following documents give a detailed overview of the Kuka IIWA Robot systems.
+ - [KUKA Sunrise.OS 1.16, Operating Instructions for End Users](https://indianinstituteofscience-my.sharepoint.com/:b:/g/personal/achuwilson_iisc_ac_in/EV4iYsOWqzJDo67tXQCS5RkBYui1geiQtkUp61vTxEKwrA) 
+ - [KUKA Sunrise Cabinet Operating Instructions](https://indianinstituteofscience-my.sharepoint.com/:b:/g/personal/achuwilson_iisc_ac_in/Edw4l1pf6npHoR7z2O2gx-IB9v7VA7hakrdIowxQbYPMbA?e=wyLi8R)
+ - [System Software KUKA Sunrise.OS 1.16, KUKA Sunrise.Workbench 1.16, Operating and Programming Instructions for System Integrators](https://indianinstituteofscience-my.sharepoint.com/:b:/g/personal/achuwilson_iisc_ac_in/ETb2S5FZac5DiL733qOmhicB3BOZzJFAMyjdIQaC3mI6rA?e=9Ne5Gq)
+
+NOTE: the linked documents are not shared publically and require IISc login
 
 
 ## **Programming the Robot**
@@ -88,7 +89,8 @@ After loading the  applications, the desired one has to be selected and executed
 
 The [```iiwa_stack```](https://github.com/IFL-CAMP/iiwa_stack) package can be used to interface IIWA fron ROS. It uses the Smart Servoing functionality over the KLI network interface. 
 
-The ROSJava nodes running on the robot as a Sunrise RobotApplication sends data and receives commands from a ROS master running on the external PC. The [wiki](https://github.com/IFL-CAMP/iiwa_stack/wiki) provides detailed instructions on getting ROS workinggit@github.com:achuwilson/pydrake-manipulator-docs.giter```
+The ROSJava nodes running on the robot as a Sunrise RobotApplication sends data and receives commands from a ROS master running on the external PC. The [wiki](https://github.com/IFL-CAMP/iiwa_stack/wiki) provides detailed instructions on getting ROS
+
 ### **Drake IIWA Java Application**
  The Java application has to be compiled with the Kuka Sunrise Workbench and uploaded to the robot. The application opens an FRI connection to which the ```kuka_driver``` running on an external computer connects to.
 
@@ -200,8 +202,8 @@ The ```IiwaCommandSender```,  defined in  [```iiwa_command_sender.py```](https:/
 
 
 The input and output ports of the individual systems inside inside a diagram has to be exported to outside so that other drake systems can interface with the inner systems. The ```ExportOutput``` and ```ExportInput``` methods of ```DiagramBuilder``` are used for this.
-### **IIWA Manipulation station**
-### **Custom Manipulation station**
+
+# **Examples**
 ## **Joint Control**
 [```example_joint_slider.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/example_joint_slider.py)
 
@@ -225,12 +227,17 @@ The DrakeVisualizer looks as follows:
 
 ![](images/drake-visualizer.png)
 
-## **Adding an end effector to the model**
-[```example_iiwa_end_effector.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/example_iiwa_visualize.py)
+## **Adding an end effector**
+[```example_iiwa_endeffector.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/example_iiwa_endeffector.py)
 
-The end effector model can be imported as a URDF/SDF file and be added to the multibody plant before finalizing and initializing it. 
+This example demonstrates how to add a custom end-effector/gripper to the ```IiwaManipulationStation```. End effector models, either in URDF or SDF format could be imported and added to the ```MultibodyPlant``` before finalizing it. It also needs to be welded to the last link of IIWA.
 
-In the example, we use a simple one finger defined in [```models/one_finger.urdf```](#) and adds it to out manipulation system. The [```example_iiwa_end_effector.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/example_iiwa_visualize.py) shows this functionality
+Following image shows IIWA attached with the small blue finger defined in [```models/onefinger.urdf```](https://github.com/achuwilson/pydrake_iiwa/blob/main/models/onefinger.urdf):
+
+![](images/endeffector.png)
+
+Once the end-effector is added to the Multibodyplant, we refer to the frames of the end effector, as defined in the URDF file to calculate the kinematics and dynamics.
+
 ## **Forward Kinematics**
 
 [```example_FK.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/example_FK.py) 
