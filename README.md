@@ -240,19 +240,33 @@ In [```example_velocity_estimate.py```](https://github.com/achuwilson/pydrake_ii
 ## **Cartesian velocity control**
 [```example_velocity_control.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/example_velocity_control.py)
 
-Joint velocities required to move the end effector at a desired velocity in cartesian space can be computed using an inverse Jacobian controller. 
+WARNING: Pay close attention when running this example on the real robot. The end effector keeps on moving at the commanded velocity, until the slider is moved back to zero.
+
+Joint velocities required to move the end effector at a desired velocity in cartesian space are computed using an inverse Jacobian controller. 
 
 The system diagram is as follows:
- 
-A ```PseudoInverseVelocityController``` is implemented, which calculates the joint velocities from the desired end effector velocities and commands them
+ ![](images/vel_ctrl_system.png)
+
+The desired end effector velocity from the slider and the current joint position is fed as inputs to the  ```PseudoInverseVelocityController```. It calculates the required joint velocities, which are integrated and fed as ```iiwa_position``` input.
 
 ## **Estimating Cartesian forces**
 [```example_force_estimate.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/example_force_estimate.py)
 
-IIWA comes with joint torque sensors at all the 7 joints. This example uses jacobian transpose to estimate the forces and wrenches in cartesian space at the end effector from the measured joint torques. The accuracy of the system is approximateely 5 N 
+IIWA has joint torque sensors at all the 7 joints. This example uses jacobian transpose to estimate the forces and in cartesian space at the end effector from the measured joint torques. 
+
+The system diagram of the example is as follows:
+![](images/force_est_system.png)
+
+It looks similar to the velocity estimation system, except that in this case, there is a ```forceEstimator``` system that takes in ```iiwa_position_measured``` and ```iiwa_torque_external```
+
 ## **Hybrid Force-Position control**
 [```example_force_feedforward.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/example_force_feedforward.py)
 
-This example makes use of the jacobian transpose pseudo inverse to calculate the feed forward torque for each joint of the IIWA. It can then be controlled along with the position control, resulting in a hybrid force-position control system
+In Hybrid force-position demo, the end effector is able to move to/maintain a position as well excert force in arbitrary directions.
+
+We make use of the ```iiwa_feedforward_torque``` input to provide additional joint torques. These torques are calculated using Jacobian transpose pseudo-inverse in the ```FeedForwardForceController``` system. while running the demo, two windows will pop up, one for controlling the cartesian position and the other for the cartesian wrench.
+
+The system diagram of the example is as follows:
+![](images/force_ctrl_system.png)
 ## **Motion Planning and Generating Trajectories** 
 TODO
