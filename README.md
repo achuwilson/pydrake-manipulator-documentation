@@ -131,6 +131,8 @@ By default, ```kuka_driver``` publishes/ subscribes these messages at 200Hz
 In order to add a custom robot interface, we have to first create message type definitions specific to the robot configuration. This would involve the status message to get feedback from the robot and the  command message to issue control commands to the robot.
 
 Once we have defined the custom message types, we have to create a driver, which will communicate with the robot hardware(such as through serial port/ethernet etc) and exchange the data with the LCM system as LCM messages
+### **Plotting LCM Messages**
+
 ## **Drake**
 ### Some drake tutorials
 - slider system print
@@ -175,6 +177,8 @@ Similar to the IIWA example, systems that parse the LCM message and provide inpu
 
 ## **Manipulation Station**
 The manipulation station system brings together the hardware interface systems, multibodyencapsulates ```IiwaCommandSender``` and ```IiwaStatusReceiver``` subsystems that interface
+
+Exported inputs and outputs
 ### **IIWA Manipulation station**
 ### **Custom Manipulation station**
 ## **Joint Control**
@@ -202,23 +206,44 @@ In the example, we use a simple one finger defined in [```models/one_finger.urdf
 
 [```example_FK.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/example_FK.py) 
 
-Given the joint angles of the robot, we can set the corresponding joint position of the multibodyplant and then estimate the position of the end effector in the world/with respect to any other frame. The ```EvalBodyPoseInWorld``` function can be used to evaluate the position of the body in the world. Dake solves the kinematics automatically in the background. The example is available in [```example_FK.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/example_FK.py) 
+Forward Kinematics calculates the position of end effector/gripper in the world given the joint position values.
 
 ![](images/fk_system.png)
+
+In this example, the low pass filtered values from the slider is used to set the joint positions of the IIWA hardware. The ```iiwa_position_measured``` output port of the manipulation station is connected to the ```FKSystem```, where the joint values of the multibodyplant are updated. The ```EvalBodyPoseInWorld``` function can be used to evaluate the position of the body in the world. 
+
 
 ## **Inverse Kinematics**
 [```example_IK.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/example_IK.py) 
 
-Drake has a rich [Inverse kinematics](https://drake.mit.edu/doxygen_cxx/classdrake_1_1multibody_1_1_inverse_kinematics.html) library, based on numerical optimization. It also allows for addition of various types of constraints
+Inverse Kinematics solves for the joint positions required to reach a particular end-effector pose.
+
+Drake has a numeric [InverseKinematics](https://drake.mit.edu/doxygen_cxx/classdrake_1_1multibody_1_1_inverse_kinematics.html) solver which  formulates IK as a nonlinear optimization problem. We can specify non linear inequality constraints like minimum distance between bodies, position/orientation constraints, target gaze constraints etc.
+Refer to [MIT 6.881 Lecture 15, Motion Planning, Part 1](https://www.youtube.com/watch?v=RjKkA_6-0C4) for more insights on Inverse kinematics and declaring constraints. Corresponding [IPython Notebook](https://github.com/RussTedrake/manipulation/blob/master/trajectories.ipynb)
+
+Drake also has a [Differential Inverse Kinematics solver](https://drake.mit.edu/doxygen_cxx/namespacedrake_1_1manipulation_1_1planner.html), which calculates joint velocities using Jacobians and integrates it to calculate the joint position. The [```example_IK.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/example_IK.py) uses the differential IK method implemented in [```differential_ik.py```](https://github.com/RobotLocomotion/drake/blob/master/examples/manipulation_station/differential_ik.py)
+
+The system diagram of the [```example_IK.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/example_IK.py) is as follows:
+![](images/ik_system.png)
+
 
 ##  **Estimating Cartesian Velocities**
 [```example_velocity_estimate.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/example_velocity_estimate.py)
 
-The cartesian velocities are estimated using the ```CalcJacobianSpatialVelocity``` method. It is then multiplied with the joint velocities to get the end effector velocity
+End effector velocities can be estimated by multiplying the robot Jacobian with joint velocities. Drake ```MultibodyPlant``` has the ```CalcJacobianSpatialVelocity``` method, which could be used to calculate the Spatial Jacobian. 
+
+The system diagram of the example is as follows:
+![](images/vel_est_system.png)
+
+In [```example_velocity_estimate.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/example_velocity_estimate.py), The output of ```EndEffectorTeleop``` is used to control the cartesian end effector position through the ```DifferentialIK``` system. The ```iiwa_velocity_estimated``` and ```iiwa_position_measured``` outputs of the manipulation station are used by the  ```velocityEstimator``` system to calculate the Jacobian and corresponding  end effector velocities.
 
 ## **Cartesian velocity control**
 [```example_velocity_control.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/example_velocity_control.py)
 
+Joint velocities required to move the end effector at a desired velocity in cartesian space can be computed using an inverse Jacobian controller. 
+
+The system diagram is as follows:
+ 
 A ```PseudoInverseVelocityController``` is implemented, which calculates the joint velocities from the desired end effector velocities and commands them
 
 ## **Estimating Cartesian forces**
