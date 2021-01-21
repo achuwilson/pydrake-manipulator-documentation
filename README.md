@@ -38,19 +38,32 @@ This document serves as a quick introduction to Kuka IIWA Robot and controlling 
 Kuka LBR IIWA is a collaborative robot manipulator which has got excellent torque control capabilities in addition to the default position control features. This enables capabilities like impedence control which is much benefitial when the  robot has to interact with noisy environment models, where pure position control can break things (or even the robot)
 
 ## **Kuka System Architecture** 
-The Kuka sunrise cabinet controller has an industrial PC running  Kuka's version of Windows CE called Sunrise OS and a realtime OS. The sunrise OS handles the user program, GUI etc and is accessible to the user. The realtime part is hidden from the user and controls the low level motor drivers and other hardware interfaces. 
 
-Kuka Smartpad, the handheld controller is just a system which shows the remote desktop view of the above mentioned Sunrise OS. Conecting an external monitor to the DVI port on the back side of the controller box shows the same Smartpad GUI. It is also possible to access the Smartpad GUI using Remote Desktop tools. The login credentials for the remote desktop are:
+A typical architecture of the manipulation station will be as follows:
 
-IP address: ```172.31.1.147``` \
-Username:  ```KukaUser```\
-password: ```68kuka1secpw59```
+![](images/architecture.jpeg)
+
+IIWA manipulator is controlled by a Kuka Sunrise Cabinet controller. It has an industrial PC running  Kuka's version of Windows CE called Sunrise OS and a realtime OS. The sunrise OS handles the user program, GUI etc and is accessible to the user. The realtime part is hidden from the user and controls the low level hardware interfaces. 
+
+The Sunrise Cabinet have multiple Ethernet interfaces. KLI- Luka Line Interface is the only one enabled by default and is used to connect the Controller to an external PC. Kuka provides Sunrise Workbench IDE with which Java programs can be written and loaded to the Sunrise Cabinet. The IDE also helps installing software packages and configuring settings such as safety configurations.
+
+The FRI/KONI interface allows for low latency control of the IIWA robot joints and has to be enabled by installing the FRI package. Drake uses this interface to interface with the hardware
+
+Additional interfaces like EtherCat, profinet are also available. 
+
+Kuka Smartpad, the handheld controller allows to start and stop the programs loaded into the SunriseCabinet. It shows the remote desktop view of the Sunrise OS running inside the Cabinet. Conecting an external monitor to the DVI port on the back side of the Sunrise Cabinet also shows the same Smartpad GUI. It is also possible to access the Smartpad GUI using Remote Desktop tools over the KLI ethernet port
+
+The following are the default IP address of the Ethernet Ports:
+
+        KLI :          172.31.1.147
+        KONI FRI :     192.170.10.2
+
+        Remote Desktop: 172.31.1.147
+        Username:       KukaUser
+        Password:       68kuka1secpw59
 
 
-The user often connects to the robot over an Ethernet interface to pogram/control the robot. Additional interfaces like EtherCat, profinet are also available. 
-
-
-The following documents give a detailed overview of the Kuka IIWA Robot systems.
+The following documents give a detailed overview of the Kuka IIWA Robot systems. It  is recommended to get familiarized with the IIWA system from the following documents before operating the robot. 
  - [KUKA Sunrise.OS 1.16, Operating Instructions for End Users](https://indianinstituteofscience-my.sharepoint.com/:b:/g/personal/achuwilson_iisc_ac_in/EV4iYsOWqzJDo67tXQCS5RkBYui1geiQtkUp61vTxEKwrA) 
  - [KUKA Sunrise Cabinet Operating Instructions](https://indianinstituteofscience-my.sharepoint.com/:b:/g/personal/achuwilson_iisc_ac_in/Edw4l1pf6npHoR7z2O2gx-IB9v7VA7hakrdIowxQbYPMbA?e=wyLi8R)
  - [System Software KUKA Sunrise.OS 1.16, KUKA Sunrise.Workbench 1.16, Operating and Programming Instructions for System Integrators](https://indianinstituteofscience-my.sharepoint.com/:b:/g/personal/achuwilson_iisc_ac_in/ETb2S5FZac5DiL733qOmhicB3BOZzJFAMyjdIQaC3mI6rA?e=9Ne5Gq)
@@ -65,6 +78,9 @@ Kuka basically provides the following two methods to program the robot
  - FRI
 
 ### **Kuka Sunrise Workbench**
+
+
+
  The default programming option provided by Kuka is through its Java APIs using an IDE called Sunrise Workbench which is infact a customized Eclipse IDE. It is not available for download on any Kuka websites, as it has to match the version of the Sunrise OS running on the controller, So request for your copy of Sunrise Workbench to your Kuka robot supplier
  
  The Java APIs may differ slightly epending upon the version of the Sunrise OS and Workbench that is being used. It is available in the  (TODO -find name) document. A sample is available here. It also provides information on configuing the robot
