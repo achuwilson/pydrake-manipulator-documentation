@@ -114,7 +114,7 @@ The ROSJava nodes running on the robot as a Sunrise RobotApplication sends data 
  There are two applications
 
   - DrakeFRIPositionDriver 
-  - DrakeFRITorqueDriver.
+  - DrakeFRITorqueDriver
 
   The DrakeFRIPositionDriver, as the name  implies allows controlling the robot in position control mode, taking in joint position commands. 
 
@@ -147,12 +147,8 @@ By default, ```kuka_driver``` publishes/ subscribes these messages at 200Hz
 
 ```IIWA_STATUS_TELEMETRY``` provides timing information, which can be used to estimate the latency in the FRI communication between the external computer and the robot controller.
 
-### **Custom Robot - LCM Interface**
-In order to add a custom robot interface, we have to first create message type definitions specific to the robot configuration. This would involve the status message to get feedback from the robot and the  command message to issue control commands to the robot.
-
-Once we have defined the custom message types, we have to create a driver, which will communicate with the robot hardware(such as through serial port/ethernet etc) and exchange the data with the LCM system as LCM messages
 ### **Plotting LCM Messages**
-
+Drake includes ```drake-lcm-spy``` in ```/opt/drake/bin``` to plot and visualize LCM messages.
 ## **Drake**
 [Drake](https://drake.mit.edu/) is a toolbox which can model dynamic systems, solve mathematical problems and has built in multibody kinematics and dynamics.
 
@@ -204,6 +200,12 @@ The ```IiwaCommandSender```,  defined in  [```iiwa_command_sender.py```](https:/
 The input and output ports of the individual systems inside inside a diagram has to be exported to outside so that other drake systems can interface with the inner systems. The ```ExportOutput``` and ```ExportInput``` methods of ```DiagramBuilder``` are used for this.
 
 # **Examples**
+To run the examples, follow these steps
+- STEP1: Make sure that the Kuka is in ```AUT ``` mode in SmartPad
+- STEP2: Select and run ```DrakeFRITorqueDriver``` Application from the Smartpad 
+- STEP3: run ```kuka_driver```  in the PC. This will cause the brakes on IIWA to release
+- STEP4: (optional) Start ```drake-visualizer``` or ```meshcat-server``` for examples requiring visualization
+- STEP4: run the example
 ## **Joint Control**
 [```example_joint_slider.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/example_joint_slider.py)
 
