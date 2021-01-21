@@ -207,7 +207,12 @@ The input and output ports of the individual systems inside inside a diagram has
 ## **Joint Control**
 [```example_joint_slider.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/example_joint_slider.py)
 
-In the [```example_joint_slider.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/example_joint_slider.py) example, we make use of the drake ```JointSliders``` system to control the joint values of the robot. The output port of the ```JointSliders``` system is connected through a ```FirstOrderLowPassFilter``` to the ```iiwa_position``` port of the ```IiwaHardwareInterface``` manipulation station.
+In this simple example, we make use of the drake ```JointSliders``` system to control the joint values of the robot. 
+The system diagram of the example is as follows:
+
+![](images/jointcontrol.png)
+
+The output port of the ```JointSliders``` system is connected through a ```FirstOrderLowPassFilter``` to the ```iiwa_position``` port of the ```IiwaHardwareInterface``` manipulation station. The ```FirstOrderLowPassFilter``` helps to smoothen the motion by filtering out high frequency changes in position which may cause jerk.
 
 
 ## **Visualizing the robot state in Drake visualizers**
