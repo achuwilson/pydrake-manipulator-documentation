@@ -45,11 +45,11 @@ A typical architecture of the manipulation station will be as follows:
 
 IIWA manipulator is controlled by a Kuka Sunrise Cabinet controller. It has an industrial PC running  Kuka's version of Windows CE called Sunrise OS and a realtime OS. The sunrise OS handles the user program, GUI etc and is accessible to the user. The realtime part is hidden from the user and controls the low level hardware interfaces. 
 
-The Sunrise Cabinet have multiple Ethernet interfaces. KLI- Luka Line Interface is the only one enabled by default and is used to connect the Controller to an external PC. Kuka provides Sunrise Workbench IDE with which Java programs can be written and loaded to the Sunrise Cabinet. The IDE also helps installing software packages and configuring settings such as safety configurations.
+The Sunrise Cabinet have multiple Ethernet interfaces. KLI- Kuka Line Interface is the only one enabled by default and is used to connect the Controller to an external PC. Kuka provides Sunrise Workbench IDE with which the IIWA could be programmed in Java. The IDE also helps installing software packages and configuring settings such as safety configurations.
 
 The FRI/KONI interface allows for low latency control of the IIWA robot joints and has to be enabled by installing the FRI package. Drake uses this interface to interface with the hardware
 
-Additional interfaces like EtherCat, profinet are also available. 
+Additional interfaces like EtherCAT, PROFINET are also available. 
 
 Kuka Smartpad, the handheld controller allows to start and stop the programs loaded into the SunriseCabinet. It shows the remote desktop view of the Sunrise OS running inside the Cabinet. Conecting an external monitor to the DVI port on the back side of the Sunrise Cabinet also shows the same Smartpad GUI. It is also possible to access the Smartpad GUI using Remote Desktop tools over the KLI ethernet port
 
@@ -81,21 +81,21 @@ Kuka basically provides the following two methods to program the robot
 
 
 
- The default programming option provided by Kuka is through its Java APIs using an IDE called Sunrise Workbench which is infact a customized Eclipse IDE. It is not available for download on any Kuka websites, as it has to match the version of the Sunrise OS running on the controller, So request for your copy of Sunrise Workbench to your Kuka robot supplier
+ The default programming option provided by Kuka is through its Java APIs using Sunrise Workbench, which is infact a customized Eclipse IDE. It is not available for download on any Kuka websites, as it has to match the version of the Sunrise OS running on the controller, So request for your copy of Sunrise Workbench to your Kuka robot supplier
  
- The Java APIs may differ slightly epending upon the version of the Sunrise OS and Workbench that is being used. It is available in the  (TODO -find name) document. A sample is available here. It also provides information on configuing the robot
+ The Java APIs may differ slightly depending upon the version of the Sunrise OS and Workbench that is being used. It is available in the  [Kuka Senrise Workbench Operating and Programming Instructions](https://indianinstituteofscience-my.sharepoint.com/:b:/g/personal/achuwilson_iisc_ac_in/ETb2S5FZac5DiL733qOmhicB3BOZzJFAMyjdIQaC3mI6rA?e=9Ne5Gq) 
 
- After developing an application in the Sunrise Workbench, the user has to synchromize it with the Sunrise OS in the controller. This just copies the project files to the controller over an ethernet port (Port X66 - Kuka Line Interface - KLI ). The default IP addess of the KLI port is ```172.31.1.147```  and a static IP must be set for the customer PC. 
- 
- While creating a new project and synchronizing it with the Controller, if you changed any safety related settings, then the SmartPad would show a safety configuration not activated error. The default password to activate the safety configuration is ```ARGUS```
+ After developing an application in the Sunrise Workbench, the user has to synchromize it with the Sunrise OS in the controller. This just copies the project files to the controller over an ethernet port (Port X66 - Kuka Line Interface - KLI ). 
+
+ While creating a new project and synchronizing it with the Controller, after changing any safety related settings, the SmartPad would show a "safety configuration not activated" error. The default password to activate the safety configuration is ```ARGUS```
 
 
 After loading the  applications, the desired one has to be selected and executed using the 
- Smartpad interface. 
+ Smartpad interface. The Key on the Smartpad helps switch between ```AUT``` - automatic and ```T1``` - reduced velocity mode 
  
 ### **FRI**  
   
-  FRI stands for "Fast Research Interface", which is an addon provided by Kuka, which enables real time control of the robot system at the lowest level possible. This requires control signals be generated in an external computer and sent over a specific Ethernet port called KONI -  Kuka Optional Network Interface. The FRI is not enabled out of the box and has to be installed and enabled through the Sunrise workbench. The default IP address of the FRI interface is ```192.170.10.2```
+  FRI stands for "Fast Research Interface", which is an addon provided by Kuka, which enables real time control of the robot system. This requires control signals be generated in an external computer and sent over a specific Ethernet port called KONI - (Kuka Optional Network Interface). The FRI is not enabled out of the box and has to be installed and enabled through the Sunrise workbench. The default IP address of the FRI interface is ```192.170.10.2```
 
   Kuka provides FRI-Client libararies in C++ and Java, which can be found inside the examples directory after the installation of FRI library in Sunrise WorkBench. The C++ libraries can be found in the file named ```FRI-Client-SDK_Cpp.zip```. It can be used to build applications talks with Kuka controller over FRI.
 
@@ -110,11 +110,13 @@ The ROSJava nodes running on the robot as a Sunrise RobotApplication sends data 
 ### **Drake IIWA Java Application**
  The Java application has to be compiled with the Kuka Sunrise Workbench and uploaded to the robot. The application opens an FRI connection to which the ```kuka_driver``` running on an external computer connects to.
 
- There are two Java applications
+ The Java applications as well as the detailed documentation is available in [```drake-iiwa-driver```](https://github.com/RobotLocomotion/drake-iiwa-driver) 
+ There are two applications
+
   - DrakeFRIPositionDriver 
   - DrakeFRITorqueDriver.
 
-  The DrakeFRIPositionDriver as the name  implies allows controlling the robot in position control mode, taking in joint position commands. 
+  The DrakeFRIPositionDriver, as the name  implies allows controlling the robot in position control mode, taking in joint position commands. 
 
   The DrakeFRITorqueDriver allows for the control of the robot in impedance control mode and takes in joint position as well as joint feedforward torque comands
 
@@ -126,7 +128,7 @@ The ```kuka_driver``` runs on the external computer, connects to the Java applic
 
 It has to be compiled as in this [documentation](https://github.com/RobotLocomotion/drake-iiwa-driver/blob/master/README.md) and requires FRI client SDK for compilation.
 
-After compilation, the ```kuka_driver``` should be run in background 
+After compilation, the ```kuka_driver``` should be run first, so as to communicate with IIWA
 ## **LCM**
 
 [LCM](https://lcm-proj.github.io/) stands for Lightweight Communications and Marshalling. It is a set of libraries that can provide publish/subscribe message passing capabilities for different applications.
@@ -152,28 +154,10 @@ Once we have defined the custom message types, we have to create a driver, which
 ### **Plotting LCM Messages**
 
 ## **Drake**
-### Some drake tutorials
-- slider system print
-- discrete time update system
-- discrete callback system
-## **LCM - Drake Interface**
-Drake contains the following systems for communicating with LCM
+[Drake](https://drake.mit.edu/) is a toolbox which can model dynamic systems, solve mathematical problems and has built in multibody kinematics and dynamics.
 
-- ```LcmInterfaceSystem```
-- ```LcmSubscriberSystem```
-- ```LcmPublisherSystem```
-
-
-### **IIWA-Drake Interface** 
-
-The IIWA - Drake hardware interface consists of two systems
-- ```IiwaStatusReceiver``` defined in [```iiwa_status_receiver.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/iiwa_status_receiver.py)
-- ```IiwaCommandSender```
-
-
-### **Custom Robot - Drake Interface**
-
-Similar to the IIWA example, systems that parse the LCM message and provide inputs/outputs to the Drake systems have to be implemented
+The [tutorials](https://github.com/RobotLocomotion/drake/tree/master/tutorials)
+are a great way to start with drake.
 
 ## **Manipulation Station**
 The manipulation station consists of the IIWA robot, the Drake systems required to communicate and parse the data with the IIWA as well as other optional hardware such as cameras, grippers etc
