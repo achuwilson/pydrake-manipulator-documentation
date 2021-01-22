@@ -1,6 +1,6 @@
 # pydrake-manipulator-docs
 
-This document serves as a quick introduction to Kuka IIWA Robot and controlling it (or any other manipulator) using Drake Python API
+This document serves as a quick introduction to Kuka IIWA Robot and controlling it using Drake Python API. The examples are entirely in python and is easy to port to any other robot manipulator. Make sure you read the official Kuka documentation and is familiar with the functioning before operating the robot.
 
 ## **Contents**
 - [Introduction](#introduction)
@@ -35,7 +35,7 @@ This document serves as a quick introduction to Kuka IIWA Robot and controlling 
 ## **Introduction**
 
 
-Kuka LBR IIWA is a collaborative robot manipulator which has got excellent torque control capabilities in addition to the default position control features. This enables capabilities like impedence control which is much benefitial when the  robot has to interact with noisy environment models, where pure position control can break things (or even the robot)
+Kuka LBR IIWA is a 7 DOF collaborative robot manipulator which has got excellent torque control capabilities in addition to the common position control features. This enables capabilities like impedence control which is much benefitial when the  robot has to interact with noisy environment models, where pure position control can break things (or even the robot). The robot has joint torque sensors on all the joints. ( It should be noted that the torque estimation is not as accurate as an external Force-Torque sensor. It is observed that the error depends on robot pose and has an accuracy of approximately 5N)
 
 ## **Kuka System Architecture** 
 
@@ -43,15 +43,15 @@ A typical architecture of the manipulation station will be as follows:
 
 ![](images/architecture.jpeg)
 
-IIWA manipulator is controlled by a Kuka Sunrise Cabinet controller. It has an industrial PC running  Kuka's version of Windows CE called Sunrise OS and a realtime OS. The sunrise OS handles the user program, GUI etc and is accessible to the user. The realtime part is hidden from the user and controls the low level hardware interfaces. 
+IIWA manipulator is controlled by Kuka Sunrise Cabinet controller. It has an industrial PC running  Kuka's version of Windows CE called Sunrise OS and a realtime OS. The sunrise OS handles the user program, GUI etc and is accessible to the user. The realtime part is hidden from the user and controls the low level hardware interfaces. 
 
-The Sunrise Cabinet have multiple Ethernet interfaces. KLI- Kuka Line Interface is the only one enabled by default and is used to connect the Controller to an external PC. Kuka provides Sunrise Workbench IDE with which the IIWA could be programmed in Java. The IDE also helps installing software packages and configuring settings such as safety configurations.
+The Sunrise Cabinet have multiple Ethernet interfaces. Kuka Line Interface (KLI) (Port X66) is the only one enabled by default and is used to connect the Controller to an external PC. Kuka provides Sunrise Workbench IDE with which the IIWA could be programmed in Java. The IDE also helps installing software packages and configuring settings such as network and safety configurations, input-output etc.
 
-The FRI/KONI interface allows for low latency control of the IIWA robot joints and has to be enabled by installing the FRI package. Drake uses this interface to interface with the hardware
+The other interface called Fast Robot Interface (FRI) enables access to the robot controller from an external computer in real time. It operates over the Kuka Optional Network Interface (KONI) and has to be enabled by installing the FRI package. Drake uses this interface to interface with the IIWA hardware.
 
-Additional interfaces like EtherCAT, PROFINET are also available. 
+Additional interfaces like EtherCAT, PROFINET are also available, which can be enabled by installing the corresponding software package from Kuka. 
 
-Kuka Smartpad, the handheld controller allows to start and stop the programs loaded into the SunriseCabinet. It shows the remote desktop view of the Sunrise OS running inside the Cabinet. Conecting an external monitor to the DVI port on the back side of the Sunrise Cabinet also shows the same Smartpad GUI. It is also possible to access the Smartpad GUI using Remote Desktop tools over the KLI ethernet port
+Kuka Smartpad, the handheld controller allows to start and stop the programs loaded into the SunriseCabinet. In fact,  it shows the remote desktop view of the Sunrise OS running inside the Cabinet. Conecting an external monitor to the DVI port on the back side of the Sunrise Cabinet also shows the same Smartpad GUI. In addition, it is also possible to access the Smartpad GUI using Remote Desktop tools over the KLI ethernet port.
 
 The following are the default IP address of the Ethernet Ports:
 
@@ -66,9 +66,9 @@ The following are the default IP address of the Ethernet Ports:
 The following documents give a detailed overview of the Kuka IIWA Robot systems. It  is recommended to get familiarized with the IIWA system from the following documents before operating the robot. 
  - [KUKA Sunrise.OS 1.16, Operating Instructions for End Users](https://indianinstituteofscience-my.sharepoint.com/:b:/g/personal/achuwilson_iisc_ac_in/EV4iYsOWqzJDo67tXQCS5RkBYui1geiQtkUp61vTxEKwrA) 
  - [KUKA Sunrise Cabinet Operating Instructions](https://indianinstituteofscience-my.sharepoint.com/:b:/g/personal/achuwilson_iisc_ac_in/Edw4l1pf6npHoR7z2O2gx-IB9v7VA7hakrdIowxQbYPMbA?e=wyLi8R)
- - [System Software KUKA Sunrise.OS 1.16, KUKA Sunrise.Workbench 1.16, Operating and Programming Instructions for System Integrators](https://indianinstituteofscience-my.sharepoint.com/:b:/g/personal/achuwilson_iisc_ac_in/ETb2S5FZac5DiL733qOmhicB3BOZzJFAMyjdIQaC3mI6rA?e=9Ne5Gq)
+ - [System Software KUKA Sunrise.OS 1.16, KUKA Sunrise.Workbench 1.16, Operating and Programming Instructions for System Integrators](https://indianinstituteofscience-my.sharepoint.com/:b:/g/personal/achuwilson_iisc_ac_in/ETb2S5FZac5DiL733qOmhicB3BOZzJFAMyjdIQaC3mI6rA?e=9Ne5Gq). This document has Java API documentation
 
-NOTE: the linked documents are not shared publically and require IISc login
+NOTE: the linked documents could not be shared publically as it would violate Kuka's Copyright notice and require IISc login. You could also create a free account on [Kuka Xpert](https://xpert.kuka.com) to download these
 
 
 ## **Programming the Robot**
@@ -81,23 +81,23 @@ Kuka basically provides the following two methods to program the robot
 
 
 
- The default programming option provided by Kuka is through its Java APIs using Sunrise Workbench, which is infact a customized Eclipse IDE. It is not available for download on any Kuka websites, as it has to match the version of the Sunrise OS running on the controller, So request for your copy of Sunrise Workbench to your Kuka robot supplier
+ The default programming option provided by Kuka is through its Java APIs using Sunrise Workbench, which is infact a customized Eclipse IDE. It is not available for download on the Kuka website, as it has to match the version of the Sunrise OS running on the controller, So request for your copy of Sunrise Workbench to your Kuka robot supplier.
  
  The Java APIs may differ slightly depending upon the version of the Sunrise OS and Workbench that is being used. It is available in the  [Kuka Senrise Workbench Operating and Programming Instructions](https://indianinstituteofscience-my.sharepoint.com/:b:/g/personal/achuwilson_iisc_ac_in/ETb2S5FZac5DiL733qOmhicB3BOZzJFAMyjdIQaC3mI6rA?e=9Ne5Gq) 
 
- After developing an application in the Sunrise Workbench, the user has to synchromize it with the Sunrise OS in the controller. This just copies the project files to the controller over an ethernet port (Port X66 - Kuka Line Interface - KLI ). 
+ After developing an application in the Sunrise Workbench, the user has to synchromize it with the Sunrise OS in the controller. This just copies the project files to the controller over the KLI port. 
 
- While creating a new project and synchronizing it with the Controller, after changing any safety related settings, the SmartPad would show a "safety configuration not activated" error. The default password to activate the safety configuration is ```ARGUS```
+ NOTE: While creating a new project and synchronizing it with the Controller, after changing any safety related settings, the SmartPad would show a "safety configuration not activated" error. The default password to activate the safety configuration is ```ARGUS```
 
 
-After loading the  applications, the desired one has to be selected and executed using the 
- Smartpad interface. The Key on the Smartpad helps switch between ```AUT``` - automatic and ```T1``` - reduced velocity mode 
+After loading them, applications can be selected and executed using the 
+ Smartpad interface. The Key on the Smartpad helps switch between ```AUT``` - automatic and ```T1``` - reduced velocity mode. 
  
 ### **FRI**  
   
-  FRI stands for "Fast Research Interface", which is an addon provided by Kuka, which enables real time control of the robot system. This requires control signals be generated in an external computer and sent over a specific Ethernet port called KONI - (Kuka Optional Network Interface). The FRI is not enabled out of the box and has to be installed and enabled through the Sunrise workbench. The default IP address of the FRI interface is ```192.170.10.2```
+  FRI stands for "Fast Robot Interface", which is an addon provided by Kuka, enables real time control of the robot system. This requires control signals be generated in an external computer and sent over the KONI Ethernet port. The FRI is not enabled out of the box and has to be installed and enabled through the Sunrise workbench. The default IP address of the FRI interface is ```192.170.10.2```
 
-  Kuka provides FRI-Client libararies in C++ and Java, which can be found inside the examples directory after the installation of FRI library in Sunrise WorkBench. The C++ libraries can be found in the file named ```FRI-Client-SDK_Cpp.zip```. It can be used to build applications talks with Kuka controller over FRI.
+  Kuka provides FRI-Client libararies in C++ and Java, which can be found inside the examples directory after the installation of FRI library in Sunrise WorkBench. The C++ libraries can be found in the file named ```FRI-Client-SDK_Cpp.zip```. It can be used to build applications that communicates with Kuka controller over FRI.
 
   Drake uses the FRI interface to control the IIWA from an external computer.  
 
@@ -105,12 +105,14 @@ After loading the  applications, the desired one has to be selected and executed
 
 The [```iiwa_stack```](https://github.com/IFL-CAMP/iiwa_stack) package can be used to interface IIWA fron ROS. It uses the Smart Servoing functionality over the KLI network interface. 
 
-The ROSJava nodes running on the robot as a Sunrise RobotApplication sends data and receives commands from a ROS master running on the external PC. The [wiki](https://github.com/IFL-CAMP/iiwa_stack/wiki) provides detailed instructions on getting ROS
+The ROSJava nodes running on the robot controller as a Sunrise RobotApplication sends data and receives commands from a ROS master running on the external PC. The [wiki](https://github.com/IFL-CAMP/iiwa_stack/wiki) provides detailed instructions on controlling from ROS.
 
+## **Controlling IIWA from Drake**
 ### **Drake IIWA Java Application**
- The Java application has to be compiled with the Kuka Sunrise Workbench and uploaded to the robot. The application opens an FRI connection to which the ```kuka_driver``` running on an external computer connects to.
+ The Java application runs on the on the Sunrise Controller and opens an FRI connection to which the ```kuka_driver``` running on an external computer connects to.
 
- The Java applications as well as the detailed documentation is available in [```drake-iiwa-driver```](https://github.com/RobotLocomotion/drake-iiwa-driver) 
+
+ The detailed documentation and code is available in [```drake-iiwa-driver```](https://github.com/RobotLocomotion/drake-iiwa-driver) 
  There are two applications
 
   - DrakeFRIPositionDriver 
@@ -118,7 +120,7 @@ The ROSJava nodes running on the robot as a Sunrise RobotApplication sends data 
 
   The DrakeFRIPositionDriver, as the name  implies allows controlling the robot in position control mode, taking in joint position commands. 
 
-  The DrakeFRITorqueDriver allows for the control of the robot in impedance control mode and takes in joint position as well as joint feedforward torque comands
+  The DrakeFRITorqueDriver allows for the control of the robot in impedance control mode and takes in joint position as well as joint feedforward torque comands. We would be using this mode more often.
 
   Both the drivers output robot status like joint positions, velocities, torques etc
 
@@ -129,11 +131,11 @@ The ```kuka_driver``` runs on the external computer, connects to the Java applic
 It has to be compiled as in this [documentation](https://github.com/RobotLocomotion/drake-iiwa-driver/blob/master/README.md) and requires FRI client SDK for compilation.
 
 After compilation, the ```kuka_driver``` should be run first, so as to communicate with IIWA
-## **LCM**
+### **LCM**
 
-[LCM](https://lcm-proj.github.io/) stands for Lightweight Communications and Marshalling. It is a set of libraries that can provide publish/subscribe message passing capabilities for different applications.
+[LCM](https://lcm-proj.github.io/) stands for Lightweight Communications and Marshalling. It is a set of libraries that can provide publish/subscribe message passing capabilities.
 
-### **IIWA-LCM Interface**
+#### **IIWA-LCM Interface**
 ```kuka_driver``` provides read/write interface to the IIWA thriugh LCM messages. It generates three LCM messsage channels
  - ```IIWA_STATUS``` of the type ```lcmt_iiwa_status```, defined in [```lcmt_iiwa_status.lcm```](https://github.com/RobotLocomotion/drake/blob/master/lcmtypes/lcmt_iiwa_status.lcm)
  - ```IIWA_COMMAND``` of the type ```lcmt_iiwa_command```, defined in [```lcmt_iiwa_command.lcm```](https://github.com/RobotLocomotion/drake/blob/master/lcmtypes/lcmt_iiwa_command.lcm)
@@ -147,13 +149,41 @@ By default, ```kuka_driver``` publishes/ subscribes these messages at 200Hz
 
 ```IIWA_STATUS_TELEMETRY``` provides timing information, which can be used to estimate the latency in the FRI communication between the external computer and the robot controller.
 
-### **Plotting LCM Messages**
+#### **Plotting LCM Messages**
 Drake includes ```drake-lcm-spy``` in ```/opt/drake/bin``` to plot and visualize LCM messages.
 ## **Drake**
 [Drake](https://drake.mit.edu/) is a toolbox which can model dynamic systems, solve mathematical problems and has built in multibody kinematics and dynamics.
 
-The [tutorials](https://github.com/RobotLocomotion/drake/tree/master/tutorials)
-are a great way to start with drake.
+
+### **Systems**
+The basic building block of Drake is a ```System```, which has input and output ports as well as an optional state. Multiple systems can be interconnected either as a ```Diagram``` or ```LeafSystem```. LeafSystems are the minimum building block and is often used for basic components like sensors, actuators, controllers, planners etc, which has a specific functionality. Drake come with many built-in systems which can be found in the [official documentation](https://drake.mit.edu/doxygen_cxx/group__systems.html)
+
+### **Diagrams**
+
+Diagrams consists of multiple LeafSystems or even other Diagrams inside and are used to represent a set of interconnected systems that function as a whole.
+
+[```example_drake_simplediagram.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/example_drake_simplediagram.py) creates a simple diagram which looks as follows:
+
+![](images/simplediagram.png)
+
+The built-in ```SystemSlider``` is used to create a GUI with 3 sliders, whose output is fed into a ```PrintSystem``` which evaluates and prints the input values to terminal at a specific update rate.
+
+### **Context**
+
+All ```Diagram``` and ```System``` has a ```Context``` which embodies the state and parameters of the system. In addition to the ```Context``` of the main diagram, each subsystems and sub diagrams have their own unique context with with we can interact with the internals of the systems. Given the ```context```, all methods called on a Diagram or System is deterministic and repeatable.  The ```Simulator``` needs the ```Diagram``` and its ```Context```for running the computations.
+
+### **MultibodyPlant**
+
+```MultibodyPlant``` is one of the most important built-in systems that Drake provides. It is to represent multiple rigid bodies connected in tree, a common practice with serial robot manipulators. It internally uses rigid body tree algorithms to compute the kinematics. ```MultibodyPlant``` also has both inputs and outputs which could be connected to other systems such as controllers or visualizers.
+
+### **Tutorials**
+Drake provides a set of [tutorials](https://github.com/RobotLocomotion/drake/tree/master/tutorials)
+
+
+[```dynamical_systems.ipynb```](https://github.com/RobotLocomotion/drake/blob/master/tutorials/dynamical_systems.ipynb) gives an introduction to modelling systems in Drake
+
+[```mathematical_program.ipynb```](https://github.com/RobotLocomotion/drake/blob/master/tutorials/mathematical_program.ipynb) introduces numerical programming capabilities of Drake
+
 
 ## **Manipulation Station**
 The manipulation station consists of the IIWA robot, the Drake systems required to communicate and parse the data with the IIWA as well as other optional hardware such as cameras, grippers etc
@@ -220,7 +250,7 @@ The output port of the ```JointSliders``` system is connected through a ```First
 ## **Visualizing the robot state in Drake visualizers**
 [```example_iiwa_visualize.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/example_iiwa_visualize.py)
 
-Drake has multiple visualizers and uses the SceneGraph method to output the visualizations. By default, Drake comes with a VTK based visualizer which is located in ```/opt/drake/bin/drake-visualizer```. We have to launch the visualizer before running the simulation.
+Drake has multiple visualizers and uses the SceneGraph system to output the visualizations. By default, Drake comes with a VTK based visualizer which is located in ```/opt/drake/bin/drake-visualizer```. We have to launch the visualizer before running the simulation.
 
 Drake also has a Meshcat based visualizer which can display the output in a browser window. Run ```meshcat-server``` present in the same directory. Meshcat visualizer is greatly helpful when running Drake as IPython notebooks in Google Colab
 
@@ -311,5 +341,3 @@ We make use of the ```iiwa_feedforward_torque``` input to provide additional joi
 
 The system diagram of the example is as follows:
 ![](images/force_ctrl_system.png)
-## **Motion Planning and Generating Trajectories** 
-TODO
