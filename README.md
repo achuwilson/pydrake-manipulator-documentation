@@ -184,7 +184,7 @@ All ```Diagram``` and ```System``` has a ```Context``` which embodies the state 
 
 ### **MultibodyPlant**
 
-```MultibodyPlant``` is one of the most important built-in systems that Drake provides. It is to represent multiple rigid bodies connected in tree, a common practice with serial robot manipulators. It internally uses rigid body tree algorithms to compute the kinematics. ```MultibodyPlant``` also has both inputs and outputs which could be connected to other systems such as controllers or visualizers.
+```MultibodyPlant``` is one of the most important built-in systems that Drake provides. It is used to represent multiple rigid bodies connected in tree, a common practice with serial robot manipulators. It internally uses rigid body tree algorithms to compute the kinematics. ```MultibodyPlant``` also has both inputs and outputs which could be connected to other systems such as controllers or visualizers.
 
 ### **Tutorials**
 Drake provides a set of [tutorials](https://github.com/RobotLocomotion/drake/tree/master/tutorials)
@@ -231,7 +231,7 @@ The ```IiwaStatusReceiver```, defined in [```iiwa_status_receiver.py```](https:/
 An example on using ```IiwaStatusReceiver``` is available in [```example_iiwa_status_receiver.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/example_iiwa_status_receiver.py)
 
 
-The ```IiwaCommandSender```,  defined in  [```iiwa_command_sender.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/iiwa_command_sender.py) encodes the input into ```IIWA_COMMAND``` LCM message which is pubblished by the ```LcmSubscriberSystem```. It has the following two vector valued inputs accapting vectors of size 7.
+The ```IiwaCommandSender```,  defined in  [```iiwa_command_sender.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/iiwa_command_sender.py) encodes the input into ```IIWA_COMMAND``` LCM message which is pubblished by the ```LcmSubscriberSystem```. It has the following two vector valued inputs accepting vectors of size 7.
 
         - position
         - torque
