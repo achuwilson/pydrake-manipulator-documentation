@@ -1,6 +1,8 @@
-# pydrake-manipulator-docs
+# pydrake - IIWA manipulator Documentation
 
 This document serves as a quick introduction to Kuka IIWA Robot and controlling it using Drake Python API. The examples are entirely in python and is easy to port to any other robot manipulator. Make sure you read the official Kuka documentation and is familiar with the functioning before operating the robot.
+
+The codes of the examples used in this document are available at [https://github.com/achuwilson/pydrake_iiwa](https://github.com/achuwilson/pydrake_iiwa)
 
 ## **Contents**
 - [Introduction](#introduction)
@@ -242,6 +244,8 @@ The ```IiwaCommandSender```,  defined in  [```iiwa_command_sender.py```](https:/
 The input and output ports of the individual systems inside inside a diagram has to be exported to outside so that other drake systems can interface with the inner systems. The ```ExportOutput``` and ```ExportInput``` methods of ```DiagramBuilder``` are used for this.
 
 # **Examples**
+The codes of the examples used in this document are available at [https://github.com/achuwilson/pydrake_iiwa](https://github.com/achuwilson/pydrake_iiwa)
+
 To run the examples, follow these steps
 - STEP1: Make sure that the Kuka is in ```AUT ``` mode in SmartPad
 - STEP2: Select and run ```DrakeFRITorqueDriver``` Application from the Smartpad 
