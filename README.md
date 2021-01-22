@@ -205,7 +205,7 @@ The diagram of the manipulation system looks as follows:
 
 The ```LcmInterfaceSystem``` has no inputs nor outputs nor state nor parameters; it declares only an update event that pumps LCM messages into their subscribers if the LCM stack has message(s) waiting. The subscribers will then update their outputs using their own declared events
 
-The ```LcmSubscriberSystem``` subscribes to the LCM data stream and outputs the recived data through a single output port
+The ```LcmSubscriberSystem``` subscribes to the LCM data stream and outputs the recived data through a single output port.
 
 The ```LCMPublisherSystem``` has a single input port and outputs the received data to the LCM data stream at a specified update rate.
 
@@ -218,12 +218,16 @@ The ```IiwaStatusReceiver```, defined in [```iiwa_status_receiver.py```](https:/
         - torque_commanded
         - torque_measured
         - torque_external
+An example on using ```IiwaStatusReceiver``` is available in [```example_iiwa_status_receiver.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/example_iiwa_status_receiver.py)
+
 
 The ```IiwaCommandSender```,  defined in  [```iiwa_command_sender.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/iiwa_command_sender.py) encodes the input into ```IIWA_COMMAND``` LCM message which is pubblished by the ```LcmSubscriberSystem```. It has the following two vector valued inputs accapting vectors of size 7.
 
         - position
         - torque
 
+ An example usage of ```IiwaCommandSender``` is available in [```example_iiwa_command_sender.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/example_iiwa_command_sender.py). Be EXTREMELY CAUTIOUS  before running this example, as it would instantaneously command 0 positions to joints. Don't run this example unless all joints are near to zero position. 
+ 
  The ```MultibodyPlant``` models the external plant that has to be controlled and helps in the computation of its kinematics and dynamics.
 
 
@@ -273,7 +277,7 @@ Following image shows IIWA attached with the small blue finger defined in [```mo
 
 ![](images/endeffector.png)
 
-Once the end-effector is added to the Multibodyplant, we refer to the frames of the end effector, as defined in the URDF file to calculate the kinematics and dynamics.
+Once the end-effector is added to the MultibodyPlant, we can refer to it by the name defined in the URDF file. 
 
 ## **Forward Kinematics**
 
@@ -341,3 +345,10 @@ We make use of the ```iiwa_feedforward_torque``` input to provide additional joi
 
 The system diagram of the example is as follows:
 ![](images/force_ctrl_system.png)
+
+## **Motion Planning and Collision Avoidance**
+TODO
+## **Gravity Compensation**
+TODO
+## **Haptic Force Feedback**
+TODO
