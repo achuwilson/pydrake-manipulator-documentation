@@ -164,6 +164,8 @@ Drake includes ```drake-lcm-spy``` in ```/opt/drake/bin``` to plot and visualize
 ## **Drake**
 [Drake](https://drake.mit.edu/) is a toolbox which can model dynamic systems, solve mathematical problems and has built in multibody kinematics and dynamics.
 
+Running the examples requires installation of Python bindings of Drake as documented [here](https://drake.mit.edu/python_bindings.html#python-bindings-binary). These were tested in Ubuntu 18.04 with binary installation of Drake.
+
 
 ### **Systems**
 The basic building block of Drake is a ```System```, which has input and output ports as well as an optional state. Multiple systems can be interconnected either as a ```Diagram``` or ```LeafSystem```. LeafSystems are the minimum building block and is often used for basic components like sensors, actuators, controllers, planners etc, which has a specific functionality. Drake come with many built-in systems which can be found in the [official documentation](https://drake.mit.edu/doxygen_cxx/group__systems.html)
