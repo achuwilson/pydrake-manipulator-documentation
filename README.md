@@ -10,21 +10,21 @@ The codes of the examples used in this document are available at [https://github
 - [Programming the Robot](#programming-the-robot)
     - [Kuka Sunrise WorkBench](#kuka-sunrise-workbench)
     - [FRI](#fri)
+- [Smartpad and Workbench Video Walk-through](#smartpad-and-workbench-video-walk-through)    
 - [Controlling IIWA from ROS](#controlling-iiwa-from-ros) 
-- [Controlling IIWA from Drake](#controlling-iiwa-from-drake)
-    - [Drake IIWA Java Application](#drake-iiwa-java-application)
-    - [kuka_driver](#kuka_driver)
-    - [IIWA-LCM Interface](#iiwa-lcm-interface)
-    - [Plotting LCM Messages](#plotting-lcm-messages)
--  [LCM](#lcm)
-    - [LCM Introduction](#)
-    - [IIWA-LCM Interface](#)
+- [Controlling IIWA from MATLAB/Simulink/Python](#Controlling-IIWA-from-MATLAB/Simulink/Python)
 - [Drake](#drake)
      - [Systems](#systems)
      - [Diagrams](#diagrams)
      - [Context](#context)
      - [MultibodyPlant](#multibodyplant)
      - [Tutorials](#tutorials)
+-  [LCM](#lcm)
+- [Controlling IIWA from Drake](#controlling-iiwa-from-drake)
+    - [Drake IIWA Java Application](#drake-iiwa-java-application)
+    - [kuka_driver](#kuka_driver)
+    - [IIWA-LCM Interface](#iiwa-lcm-interface)
+- [Controlling Custom Robot from Drake](#Controlling-Custom-Robot-from-Drake)
 - [Manipulation Station](#manipulation-station)
 - [Examples](#)
     - [Joint Control](#joint-control)
@@ -104,6 +104,7 @@ Download Links
  - [HRC Addon](https://indianinstituteofscience-my.sharepoint.com/:u:/g/personal/achuwilson_iisc_ac_in/EY7uGq3RELJAsfiPXchYBXYBTzac1upeZKnQWZ3S3OYYxg?e=Vih3Jo)
  - [Sample Sunrise Project](https://indianinstituteofscience-my.sharepoint.com/:u:/g/personal/achuwilson_iisc_ac_in/EV-CtR-rhjZLkxZBV-kK0oMBhW0X3Rcw1UlBOHzYOXZxNw?e=ddkZqd)
  - [FRI Client SDK C++](https://indianinstituteofscience-my.sharepoint.com/:u:/g/personal/achuwilson_iisc_ac_in/ES0_qKtT5HNLqHYRvyvdlD8BOUA83MfFFzkkU1Ie0pmPLw?e=C48Smz)
+
  NOTE: While creating a new project and synchronizing it with the Controller, after changing any safety related settings, the SmartPad would show a "safety configuration not activated" error. The default password to activate the safety configuration is ```ARGUS```
 
 
@@ -118,57 +119,24 @@ After loading them, applications can be selected and executed using the
 
   Drake uses the FRI interface to control the IIWA from an external computer.  
 
+## **Smartpad and Workbench Video Walk-through**
+ TODO #1
 ## **Controlling IIWA from ROS**
 
 The [```iiwa_stack```](https://github.com/IFL-CAMP/iiwa_stack) package can be used to interface IIWA from ROS. It uses the Smart Servoing functionality over the KLI network interface. 
 
 The ROSJava nodes running on the robot controller as a Sunrise RobotApplication sends data and receives commands from a ROS master running on the external PC. The [wiki](https://github.com/IFL-CAMP/iiwa_stack/wiki) provides detailed instructions on controlling from ROS.
 
-## **Controlling IIWA from Drake**
-### **Drake IIWA Java Application**
- The Java application runs on the on the Sunrise Controller and opens an FRI connection to which the ```kuka_driver``` running on an external computer connects to.
+## **Controlling IIWA from MATLAB/Simulink/Python**
+- The [Kuka Sunrise Toolbox for Matlab](https://github.com/Modi1987/KST-Kuka-Sunrise-Toolbox) allows control of the LBR iiwa robot from MATLAB.
+- The [Simulink-iiwa interface] (https://github.com/Modi1987/Simulink-iiwa-interface) for Simulink based control.
+- [iiwaPy](https://github.com/Modi1987/iiwaPy) can be used for control of the iiwa from Python.
+
+All of the above packages are based on the Kuka Sunrise Toolbox for Matlab.
 
 
- The detailed documentation and code is available in [```drake-iiwa-driver```](https://github.com/RobotLocomotion/drake-iiwa-driver) 
- There are two applications
 
-  - DrakeFRIPositionDriver 
-  - DrakeFRITorqueDriver
-
-  The DrakeFRIPositionDriver, as the name  implies allows controlling the robot in position control mode, taking in joint position commands. 
-
-  The DrakeFRITorqueDriver allows for the control of the robot in impedance control mode and takes in joint position as well as joint feed-forward torque commands. We would be using this mode more often.
-
-  Both the drivers output robot status like joint positions, velocities, torques etc
-
-  
-### **kuka_driver** 
-The ```kuka_driver``` runs on the external computer, connects to the Java application running on the robot and provides an LCM interface to read/write data.
-
-It has to be compiled as in this [documentation](https://github.com/RobotLocomotion/drake-iiwa-driver/blob/master/README.md) and requires FRI client SDK for compilation.
-
-After compilation, the ```kuka_driver``` should be run first, so as to communicate with IIWA
-### **LCM**
-
-[LCM](https://lcm-proj.github.io/) stands for Lightweight Communications and Marshalling. It is a set of libraries that can provide publish/subscribe message passing capabilities.
-
-#### **IIWA-LCM Interface**
-```kuka_driver``` provides read/write interface to the IIWA through LCM messages. It generates three LCM message channels
- - ```IIWA_STATUS``` of the type ```lcmt_iiwa_status```, defined in [```lcmt_iiwa_status.lcm```](https://github.com/RobotLocomotion/drake/blob/master/lcmtypes/lcmt_iiwa_status.lcm)
- - ```IIWA_COMMAND``` of the type ```lcmt_iiwa_command```, defined in [```lcmt_iiwa_command.lcm```](https://github.com/RobotLocomotion/drake/blob/master/lcmtypes/lcmt_iiwa_command.lcm)
- - ```IIWA_STATUS_TELEMETRY``` of the type ```lcmt_iiwa_status_telemetry```, defined in [```lcmt_iiwa_status_telemetry.lcm```](https://github.com/RobotLocomotion/drake/blob/master/lcmtypes/lcmt_iiwa_status_telemetry.lcm)
-
-By default, ```kuka_driver``` publishes/ subscribes these messages at 200Hz
-
-```IIWA_STATUS``` provides the robot joint status which includes joint position, velocities and torques. An example which subscribes to the ```IIWA_STATUS``` and prints the output is available in [```lcm_examples/iiwa-lcm-listener.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/lcm_examples/iiwa-lcm-listener.py)
-
-```IIWA_COMMAND``` is used to command joint positions with an optional feed forward joint torque. An example which subscribes to ```IIWA_STATUS``` to estimate the current robot configuration and move joint 7 incrementally is available in [```lcm_examples/iiwa-lcm-publisher.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/lcm_examples/iiwa-lcm-publisher.py)
-
-```IIWA_STATUS_TELEMETRY``` provides timing information, which can be used to estimate the latency in the FRI communication between the external computer and the robot controller.
-
-#### **Plotting LCM Messages**
-Drake includes ```drake-lcm-spy``` in ```/opt/drake/bin``` to plot and visualize LCM messages.
-## **Drake**
+# **Drake**
 [Drake](https://drake.mit.edu/) is a toolbox which can model dynamic systems, solve mathematical problems and has built in multibody kinematics and dynamics.
 
 Running the examples requires installation of Python bindings of Drake as documented [here](https://drake.mit.edu/python_bindings.html#python-bindings-binary). These were tested in Ubuntu 18.04 with binary installation of Drake.
@@ -203,6 +171,74 @@ Drake provides a set of [tutorials](https://github.com/RobotLocomotion/drake/tre
 
 [```mathematical_program.ipynb```](https://github.com/RobotLocomotion/drake/blob/master/tutorials/mathematical_program.ipynb) introduces numerical programming capabilities of Drake
 
+
+## **LCM**
+
+[LCM](https://lcm-proj.github.io/) stands for Lightweight Communications and Marshalling. It is a set of libraries that can provide publish/subscribe message passing capabilities.
+
+LCM implementatoions are available for all common programming languages and operating systems. Refer to the [LCM example](https://lcm-proj.github.io/tutorial_general.html) for a quick-start.
+
+#### **Plotting LCM Messages**
+Drake includes ```drake-lcm-spy``` in ```/opt/drake/bin``` to plot and visualize LCM messages.
+
+## **Controlling IIWA from Drake**
+
+The following diagram shows a typical architecture of a Drake based system for controlling the iiwa.
+
+![](images/drake_arch.png) 
+
+
+```DrakeFRIPositionDriver```  and ```DrakeFRITorqueDriver``` are Java applications built using the Sunrise Workbench and running inside the Sunrise Controller. They open an FRI connection at a specified network port, to which an external computer can connect to.
+
+```kuka_driver``` is a C++ application built using the FRI-Client-SDK-Cpp and runs on the external computer. It communicates with the Sunrise Controller over the FRI/KONI interface. It also publishes and subscribes LCM messages which can be used by other programs to read/write data to the iiwa robot.
+
+Drake has a built in ```LCMInterfaceSystem``` which allows drake systems to publish and subscribe to LCM messages. Other Drake systems make use of these systems to communicate with the hardware.
+
+### **Drake IIWA Java Application**
+ The Java application runs on the on the Sunrise Controller and opens an FRI connection to which the ```kuka_driver``` running on an external computer connects to.
+
+
+ The detailed documentation and code is available in [```drake-iiwa-driver```](https://github.com/RobotLocomotion/drake-iiwa-driver) 
+ There are two applications
+
+  - DrakeFRIPositionDriver 
+  - DrakeFRITorqueDriver
+
+  The DrakeFRIPositionDriver, as the name  implies allows controlling the robot in position control mode, taking in joint position commands. 
+
+  The DrakeFRITorqueDriver allows for the control of the robot in impedance control mode and takes in joint position as well as joint feed-forward torque commands. We would be using this mode more often.
+
+  Both the drivers output robot status like joint positions, velocities, torques etc
+
+  
+### **kuka_driver** 
+The ```kuka_driver``` runs on the external computer, connects to the Java application running on the robot and provides an LCM interface to read/write data.
+
+It has to be compiled as in this [documentation](https://github.com/RobotLocomotion/drake-iiwa-driver/blob/master/README.md) and requires FRI client SDK for compilation.
+
+After compilation, the ```kuka_driver``` should be run first, so as to communicate with IIWA
+
+
+### **IIWA-LCM Interface**
+```kuka_driver``` provides read/write interface to the IIWA through LCM messages. It generates three LCM message channels
+ - ```IIWA_STATUS``` of the type ```lcmt_iiwa_status```, defined in [```lcmt_iiwa_status.lcm```](https://github.com/RobotLocomotion/drake/blob/master/lcmtypes/lcmt_iiwa_status.lcm)
+ - ```IIWA_COMMAND``` of the type ```lcmt_iiwa_command```, defined in [```lcmt_iiwa_command.lcm```](https://github.com/RobotLocomotion/drake/blob/master/lcmtypes/lcmt_iiwa_command.lcm)
+ - ```IIWA_STATUS_TELEMETRY``` of the type ```lcmt_iiwa_status_telemetry```, defined in [```lcmt_iiwa_status_telemetry.lcm```](https://github.com/RobotLocomotion/drake/blob/master/lcmtypes/lcmt_iiwa_status_telemetry.lcm)
+
+By default, ```kuka_driver``` publishes/ subscribes these messages at 200Hz
+
+```IIWA_STATUS``` provides the robot joint status which includes joint position, velocities and torques. An example which subscribes to the ```IIWA_STATUS``` and prints the output is available in [```lcm_examples/iiwa-lcm-listener.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/lcm_examples/iiwa-lcm-listener.py)
+
+```IIWA_COMMAND``` is used to command joint positions with an optional feed forward joint torque. An example which subscribes to ```IIWA_STATUS``` to estimate the current robot configuration and move joint 7 incrementally is available in [```lcm_examples/iiwa-lcm-publisher.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/lcm_examples/iiwa-lcm-publisher.py)
+
+```IIWA_STATUS_TELEMETRY``` provides timing information, which can be used to estimate the latency in the FRI communication between the external computer and the robot controller.
+
+## **Controlling Custom Robot from Drake**
+ The Kuka iiwa interface in this documentation can be adapted to interface custom robot manipulators. Following would be the minimum requirements:
+ - a hardware interface program similar to ```kuka_driver```, which reads and writes from the hardware. As a bare minimum, we should be able to write joint positions and read joint positions from the hardware and pass it on as LCM messages.
+ - Define custom LCM messages depending on the hardware capabilities. Take a look at [```lcmt_iiwa_command.lcm```](https://github.com/RobotLocomotion/drake/blob/master/lcmtypes/lcmt_iiwa_command.lcm) and [```lcmt_iiwa_status.lcm```](https://github.com/RobotLocomotion/drake/blob/master/lcmtypes/lcmt_iiwa_status.lcm) and others defined in [lcmtypes](https://github.com/RobotLocomotion/drake/tree/master/lcmtypes)
+ - Develop Drake systems that parses the custom LCM messages and interfaces them to other Drake systems, similar to [```iiwa_status_receiver.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/iiwa_command_sender.py) and [```iiwa_command_sender.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/iiwa_command_sender.py). 
+ - URDF/SDF model of the robot. This will be used to create the MultibodyPlant which is used to compute the kinematics and dynamics of the system. (NOTE: use OBJ files instead of STL/DAE)
 
 ## **Manipulation Station**
 The manipulation station consists of the IIWA robot, the Drake systems required to communicate and parse the data with the IIWA as well as other optional hardware such as cameras, grippers etc
@@ -322,6 +358,7 @@ Refer to [MIT 6.881 Lecture 15, Motion Planning, Part 1](https://www.youtube.com
 Drake also has a [Differential Inverse Kinematics solver](https://drake.mit.edu/doxygen_cxx/namespacedrake_1_1manipulation_1_1planner.html), which calculates joint velocities using Jacobian and integrates it to calculate the joint position. The [```example_IK.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/example_IK.py) uses the differential IK method implemented in [```differential_ik.py```](https://github.com/RobotLocomotion/drake/blob/master/examples/manipulation_station/differential_ik.py)
 
 The system diagram of the [```example_IK.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/example_IK.py) is as follows:
+
 ![](images/ik_system.png)
 
 
@@ -331,6 +368,7 @@ The system diagram of the [```example_IK.py```](https://github.com/achuwilson/py
 End effector velocities can be estimated by multiplying the robot Jacobian with joint velocities. Drake ```MultibodyPlant``` has the ```CalcJacobianSpatialVelocity``` method, which could be used to calculate the Spatial Jacobian. 
 
 The system diagram of the example is as follows:
+
 ![](images/vel_est_system.png)
 
 In [```example_velocity_estimate.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/example_velocity_estimate.py), The output of ```EndEffectorTeleop``` is used to control the cartesian end effector position through the ```DifferentialIK``` system. The ```iiwa_velocity_estimated``` and ```iiwa_position_measured``` outputs of the manipulation station are used by the  ```velocityEstimator``` system to calculate the Jacobian and corresponding  end effector velocities.
@@ -343,6 +381,7 @@ WARNING: Pay close attention when running this example on the real robot. The en
 Joint velocities required to move the end effector at a desired velocity in cartesian space are computed using an inverse Jacobian controller. 
 
 The system diagram is as follows:
+
  ![](images/vel_ctrl_system.png)
 
 The desired end effector velocity from the slider and the current joint position is fed as inputs to the  ```PseudoInverseVelocityController```. It calculates the required joint velocities, which are integrated and fed as ```iiwa_position``` input.
@@ -353,6 +392,7 @@ The desired end effector velocity from the slider and the current joint position
 IIWA has joint torque sensors at all the 7 joints. This example uses jacobian transpose to estimate the forces and in cartesian space at the end effector from the measured joint torques. 
 
 The system diagram of the example is as follows:
+
 ![](images/force_est_system.png)
 
 It looks similar to the velocity estimation system, except that in this case, there is a ```forceEstimator``` system that takes in ```iiwa_position_measured``` and ```iiwa_torque_external```
@@ -365,11 +405,12 @@ In Hybrid force-position demo, the end effector is able to move to/maintain a po
 We make use of the ```iiwa_feedforward_torque``` input to provide additional joint torques. These torques are calculated using Jacobian transpose pseudo-inverse in the ```FeedForwardForceController``` system. while running the demo, two windows will pop up, one for controlling the cartesian position and the other for the cartesian wrench.
 
 The system diagram of the example is as follows:
+
 ![](images/force_ctrl_system.png)
 
 ## **Motion Planning and Collision Avoidance**
-TODO
+TODO #2
 ## **Gravity Compensation**
-TODO
+TODO #3
 ## **Haptic Force Feedback**
-TODO
+TODO #4
