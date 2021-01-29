@@ -45,7 +45,7 @@ The codes of the examples used in this document are available at [https://github
 ## **Introduction**
 
 
-Kuka LBR IIWA is a 7 DOF collaborative robot manipulator which has got excellent torque control capabilities in addition to the common position control features. This enables capabilities like impedence control which is much beneficial when the  robot has to interact with noisy environment models, where pure position control can break things (or even the robot). The robot has joint torque sensors on all the joints. ( It should be noted that the torque estimation is not as accurate as an external Force-Torque sensor. It is observed that the error depends on robot pose and has an accuracy of approximately 5N)
+Kuka LBR IIWA is a 7 DOF collaborative robot manipulator which has got excellent torque control capabilities in addition to the common position control features. This enables capabilities like impedance control which is much beneficial when the  robot has to interact with noisy environment models, where pure position control can break things (or even the robot). The robot has joint torque sensors on all the joints. ( It should be noted that the torque estimation is not as accurate as an external Force-Torque sensor. It is observed that the error depends on robot pose and has an accuracy of approximately 5N)
 
 ## **Kuka System Architecture** 
 
@@ -61,7 +61,7 @@ The other interface called Fast Robot Interface (FRI) enables access to the robo
 
 Additional interfaces like EtherCAT, PROFINET are also available, which can be enabled by installing the corresponding software package from Kuka. 
 
-Kuka Smartpad, the handheld controller allows to start and stop the programs loaded into the SunriseCabinet. In fact,  it shows the remote desktop view of the Sunrise OS running inside the Cabinet. Conecting an external monitor to the DVI port on the back side of the Sunrise Cabinet also shows the same Smartpad GUI. In addition, it is also possible to access the Smartpad GUI using Remote Desktop tools over the KLI ethernet port.
+Kuka Smartpad, the handheld controller allows to start and stop the programs loaded into the SunriseCabinet. In fact,  it shows the remote desktop view of the Sunrise OS running inside the Cabinet. Connecting an external monitor to the DVI port on the back side of the Sunrise Cabinet also shows the same Smartpad GUI. In addition, it is also possible to access the Smartpad GUI using Remote Desktop tools over the KLI ethernet port.
 
 The following are the default IP address of the Ethernet Ports:
 
@@ -78,7 +78,7 @@ The following documents give a detailed overview of the Kuka IIWA Robot systems.
  - [KUKA Sunrise Cabinet Operating Instructions](https://indianinstituteofscience-my.sharepoint.com/:b:/g/personal/achuwilson_iisc_ac_in/Edw4l1pf6npHoR7z2O2gx-IB9v7VA7hakrdIowxQbYPMbA?e=wyLi8R)
  - [System Software KUKA Sunrise.OS 1.16, KUKA Sunrise.Workbench 1.16, Operating and Programming Instructions for System Integrators](https://indianinstituteofscience-my.sharepoint.com/:b:/g/personal/achuwilson_iisc_ac_in/ETb2S5FZac5DiL733qOmhicB3BOZzJFAMyjdIQaC3mI6rA?e=9Ne5Gq). This document has Java API documentation
 
-NOTE: the linked documents could not be shared publically as it would violate Kuka's Copyright notice and require IISc login. You could also create a free account on [Kuka Xpert](https://xpert.kuka.com) to download these
+NOTE: the linked documents could not be shared publicly as it would violate Kuka's Copyright notice and require IISc login. You could also create a free account on [Kuka Xpert](https://xpert.kuka.com) to download these
 
 
 ## **Programming the Robot**
@@ -91,12 +91,19 @@ Kuka basically provides the following two methods to program the robot
 
 
 
- The default programming option provided by Kuka is through its Java APIs using Sunrise Workbench, which is infact a customized Eclipse IDE. It is not available for download on the Kuka website, as it has to match the version of the Sunrise OS running on the controller, So request for your copy of Sunrise Workbench to your Kuka robot supplier.
+ The default programming option provided by Kuka is through its Java APIs using Sunrise Workbench, which is in-fact a customized Eclipse IDE. It is not available for download on the Kuka website, as it has to match the version of the Sunrise OS running on the controller, So request for your copy of Sunrise Workbench to your Kuka robot supplier.
  
- The Java APIs may differ slightly depending upon the version of the Sunrise OS and Workbench that is being used. It is available in the  [Kuka Senrise Workbench Operating and Programming Instructions](https://indianinstituteofscience-my.sharepoint.com/:b:/g/personal/achuwilson_iisc_ac_in/ETb2S5FZac5DiL733qOmhicB3BOZzJFAMyjdIQaC3mI6rA?e=9Ne5Gq) 
+ The Java APIs may differ slightly depending upon the version of the Sunrise OS and Workbench that is being used. It is available in the  [Kuka Sunrise Workbench Operating and Programming Instructions](https://indianinstituteofscience-my.sharepoint.com/:b:/g/personal/achuwilson_iisc_ac_in/ETb2S5FZac5DiL733qOmhicB3BOZzJFAMyjdIQaC3mI6rA?e=9Ne5Gq) 
 
- After developing an application in the Sunrise Workbench, the user has to synchromize it with the Sunrise OS in the controller. This just copies the project files to the controller over the KLI port. 
+ After developing an application in the Sunrise Workbench, the user has to synchronize it with the Sunrise OS in the controller. This just copies the project files to the controller over the KLI port. 
 
+Download Links
+ - [Kuka Sunrise Workbench v1.16](https://indianinstituteofscience-my.sharepoint.com/:u:/g/personal/achuwilson_iisc_ac_in/EVTSc15X_GRIlWSK5q1Tb30Bb0Yqsdy8eesSHTUHCa5uRg?e=tj55YR)
+ - [FRI Addon](https://indianinstituteofscience-my.sharepoint.com/:u:/g/personal/achuwilson_iisc_ac_in/EXaiVwwBq4pKsusDc46TTOQB8VykoFdGvrw-m9PZhETiDA?e=HIVX5J)
+ - [SmartServo Addon](https://indianinstituteofscience-my.sharepoint.com/:u:/g/personal/achuwilson_iisc_ac_in/EcM-n6luAApEnvS9MxJgs4YBfm4CiQUMdh_WkRj2hqixMQ?e=tkKpXC)
+ - [HRC Addon](https://indianinstituteofscience-my.sharepoint.com/:u:/g/personal/achuwilson_iisc_ac_in/EY7uGq3RELJAsfiPXchYBXYBTzac1upeZKnQWZ3S3OYYxg?e=Vih3Jo)
+ - [Sample Sunrise Project](https://indianinstituteofscience-my.sharepoint.com/:u:/g/personal/achuwilson_iisc_ac_in/EV-CtR-rhjZLkxZBV-kK0oMBhW0X3Rcw1UlBOHzYOXZxNw?e=ddkZqd)
+ - [FRI Client SDK C++](https://indianinstituteofscience-my.sharepoint.com/:u:/g/personal/achuwilson_iisc_ac_in/ES0_qKtT5HNLqHYRvyvdlD8BOUA83MfFFzkkU1Ie0pmPLw?e=C48Smz)
  NOTE: While creating a new project and synchronizing it with the Controller, after changing any safety related settings, the SmartPad would show a "safety configuration not activated" error. The default password to activate the safety configuration is ```ARGUS```
 
 
@@ -107,13 +114,13 @@ After loading them, applications can be selected and executed using the
   
   FRI stands for "Fast Robot Interface", which is an addon provided by Kuka, enables real time control of the robot system. This requires control signals be generated in an external computer and sent over the KONI Ethernet port. The FRI is not enabled out of the box and has to be installed and enabled through the Sunrise workbench. The default IP address of the FRI interface is ```192.170.10.2```
 
-  Kuka provides FRI-Client libararies in C++ and Java, which can be found inside the examples directory after the installation of FRI library in Sunrise WorkBench. The C++ libraries can be found in the file named ```FRI-Client-SDK_Cpp.zip```. It can be used to build applications that communicates with Kuka controller over FRI.
+  Kuka provides FRI-Client libraries in C++ and Java, which can be found inside the examples directory after the installation of FRI library in Sunrise WorkBench. The C++ libraries can be found in the file named ```FRI-Client-SDK_Cpp.zip```. It can be used to build applications that communicates with Kuka controller over FRI.
 
   Drake uses the FRI interface to control the IIWA from an external computer.  
 
 ## **Controlling IIWA from ROS**
 
-The [```iiwa_stack```](https://github.com/IFL-CAMP/iiwa_stack) package can be used to interface IIWA fron ROS. It uses the Smart Servoing functionality over the KLI network interface. 
+The [```iiwa_stack```](https://github.com/IFL-CAMP/iiwa_stack) package can be used to interface IIWA from ROS. It uses the Smart Servoing functionality over the KLI network interface. 
 
 The ROSJava nodes running on the robot controller as a Sunrise RobotApplication sends data and receives commands from a ROS master running on the external PC. The [wiki](https://github.com/IFL-CAMP/iiwa_stack/wiki) provides detailed instructions on controlling from ROS.
 
@@ -130,7 +137,7 @@ The ROSJava nodes running on the robot controller as a Sunrise RobotApplication 
 
   The DrakeFRIPositionDriver, as the name  implies allows controlling the robot in position control mode, taking in joint position commands. 
 
-  The DrakeFRITorqueDriver allows for the control of the robot in impedance control mode and takes in joint position as well as joint feedforward torque comands. We would be using this mode more often.
+  The DrakeFRITorqueDriver allows for the control of the robot in impedance control mode and takes in joint position as well as joint feed-forward torque commands. We would be using this mode more often.
 
   Both the drivers output robot status like joint positions, velocities, torques etc
 
@@ -146,7 +153,7 @@ After compilation, the ```kuka_driver``` should be run first, so as to communica
 [LCM](https://lcm-proj.github.io/) stands for Lightweight Communications and Marshalling. It is a set of libraries that can provide publish/subscribe message passing capabilities.
 
 #### **IIWA-LCM Interface**
-```kuka_driver``` provides read/write interface to the IIWA thriugh LCM messages. It generates three LCM messsage channels
+```kuka_driver``` provides read/write interface to the IIWA through LCM messages. It generates three LCM message channels
  - ```IIWA_STATUS``` of the type ```lcmt_iiwa_status```, defined in [```lcmt_iiwa_status.lcm```](https://github.com/RobotLocomotion/drake/blob/master/lcmtypes/lcmt_iiwa_status.lcm)
  - ```IIWA_COMMAND``` of the type ```lcmt_iiwa_command```, defined in [```lcmt_iiwa_command.lcm```](https://github.com/RobotLocomotion/drake/blob/master/lcmtypes/lcmt_iiwa_command.lcm)
  - ```IIWA_STATUS_TELEMETRY``` of the type ```lcmt_iiwa_status_telemetry```, defined in [```lcmt_iiwa_status_telemetry.lcm```](https://github.com/RobotLocomotion/drake/blob/master/lcmtypes/lcmt_iiwa_status_telemetry.lcm)
@@ -217,7 +224,7 @@ The diagram of the manipulation system looks as follows:
 
 The ```LcmInterfaceSystem``` has no inputs nor outputs nor state nor parameters; it declares only an update event that pumps LCM messages into their subscribers if the LCM stack has message(s) waiting. The subscribers will then update their outputs using their own declared events
 
-The ```LcmSubscriberSystem``` subscribes to the LCM data stream and outputs the recived data through a single output port.
+The ```LcmSubscriberSystem``` subscribes to the LCM data stream and outputs the received data through a single output port.
 
 The ```LCMPublisherSystem``` has a single input port and outputs the received data to the LCM data stream at a specified update rate.
 
@@ -233,7 +240,7 @@ The ```IiwaStatusReceiver```, defined in [```iiwa_status_receiver.py```](https:/
 An example on using ```IiwaStatusReceiver``` is available in [```example_iiwa_status_receiver.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/example_iiwa_status_receiver.py)
 
 
-The ```IiwaCommandSender```,  defined in  [```iiwa_command_sender.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/iiwa_command_sender.py) encodes the input into ```IIWA_COMMAND``` LCM message which is pubblished by the ```LcmSubscriberSystem```. It has the following two vector valued inputs accepting vectors of size 7.
+The ```IiwaCommandSender```,  defined in  [```iiwa_command_sender.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/iiwa_command_sender.py) encodes the input into ```IIWA_COMMAND``` LCM message which is published by the ```LcmSubscriberSystem```. It has the following two vector valued inputs accepting vectors of size 7.
 
         - position
         - torque
@@ -312,7 +319,7 @@ Inverse Kinematics solves for the joint positions required to reach a particular
 Drake has a numeric [InverseKinematics](https://drake.mit.edu/doxygen_cxx/classdrake_1_1multibody_1_1_inverse_kinematics.html) solver which  formulates IK as a nonlinear optimization problem. We can specify non linear inequality constraints like minimum distance between bodies, position/orientation constraints, target gaze constraints etc.
 Refer to [MIT 6.881 Lecture 15, Motion Planning, Part 1](https://www.youtube.com/watch?v=RjKkA_6-0C4) for more insights on Inverse kinematics and declaring constraints. Corresponding [IPython Notebook](https://github.com/RussTedrake/manipulation/blob/master/trajectories.ipynb)
 
-Drake also has a [Differential Inverse Kinematics solver](https://drake.mit.edu/doxygen_cxx/namespacedrake_1_1manipulation_1_1planner.html), which calculates joint velocities using Jacobians and integrates it to calculate the joint position. The [```example_IK.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/example_IK.py) uses the differential IK method implemented in [```differential_ik.py```](https://github.com/RobotLocomotion/drake/blob/master/examples/manipulation_station/differential_ik.py)
+Drake also has a [Differential Inverse Kinematics solver](https://drake.mit.edu/doxygen_cxx/namespacedrake_1_1manipulation_1_1planner.html), which calculates joint velocities using Jacobian and integrates it to calculate the joint position. The [```example_IK.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/example_IK.py) uses the differential IK method implemented in [```differential_ik.py```](https://github.com/RobotLocomotion/drake/blob/master/examples/manipulation_station/differential_ik.py)
 
 The system diagram of the [```example_IK.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/example_IK.py) is as follows:
 ![](images/ik_system.png)
@@ -353,7 +360,7 @@ It looks similar to the velocity estimation system, except that in this case, th
 ## **Hybrid Force-Position control**
 [```example_force_feedforward.py```](https://github.com/achuwilson/pydrake_iiwa/blob/main/example_force_feedforward.py)
 
-In Hybrid force-position demo, the end effector is able to move to/maintain a position as well excert force in arbitrary directions.
+In Hybrid force-position demo, the end effector is able to move to/maintain a position as well exert force in arbitrary directions.
 
 We make use of the ```iiwa_feedforward_torque``` input to provide additional joint torques. These torques are calculated using Jacobian transpose pseudo-inverse in the ```FeedForwardForceController``` system. while running the demo, two windows will pop up, one for controlling the cartesian position and the other for the cartesian wrench.
 
