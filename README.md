@@ -26,7 +26,7 @@ The codes of the examples used in this document are available at [https://github
     - [IIWA-LCM Interface](#iiwa-lcm-interface)
 - [Controlling Custom Robot from Drake](#Controlling-Custom-Robot-from-Drake)
 - [Manipulation Station](#manipulation-station)
-- [Examples](#)
+- [Examples](#Examples)
     - [Joint Control](#joint-control)
     - [Visualizing the robot state in Drake visualizers](#visualizing-the-robot-state-in-Drake-visualizers)
     - [Adding an end effector](#Adding-an-end-effector)
