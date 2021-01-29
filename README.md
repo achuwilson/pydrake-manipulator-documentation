@@ -1,6 +1,6 @@
-# A Gentle Introduction to Kuka iiwa and Manipulation using Drake in Python
+# Kuka iiwa and Manipulation using Drake in Python
 
-This document serves as a quick introduction to Kuka IIWA Robot and controlling it using Drake Python API. The examples are entirely in python and is easy to port to any other robot manipulator. Make sure you read the official Kuka documentation and is familiar with the functioning before operating the robot.
+This document serves as a quick introduction to Kuka iiwa Robot and controlling it using Drake Python API. The examples are entirely in python and is easy to port to any other robot manipulator. Make sure you have read the official Kuka documentation and is familiar with the functioning before operating the robot.
 
 The codes of the examples used in this document are available at [https://github.com/achuwilson/pydrake_iiwa](https://github.com/achuwilson/pydrake_iiwa)
 
@@ -45,7 +45,7 @@ The codes of the examples used in this document are available at [https://github
 ## **Introduction**
 
 
-Kuka LBR IIWA is a 7 DOF collaborative robot manipulator which has got excellent torque control capabilities in addition to the common position control features. This enables capabilities like impedance control which is much beneficial when the  robot has to interact with noisy environment models, where pure position control can break things (or even the robot). The robot has joint torque sensors on all the joints. ( It should be noted that the torque estimation is not as accurate as an external Force-Torque sensor. It is observed that the error depends on robot pose and has an accuracy of approximately 5N)
+Kuka LBR IIWA is a 7 DOF collaborative robot manipulator which has got excellent torque control capabilities in addition to the common position control features. This enables capabilities like impedance control which is much beneficial when the  robot has to interact with noisy environment models, where pure position control can break things (or even the robot). The robot has joint torque sensors on all the joints. ( NOTE: the torque estimation is not as accurate as an external Force-Torque sensor. It is observed that the error depends on robot pose and has an accuracy of approximately 5N)
 
 ## **Kuka System Architecture** 
 
@@ -75,7 +75,7 @@ The following are the default IP address of the Ethernet Ports:
 
 The following documents give a detailed overview of the Kuka IIWA Robot systems. It  is recommended to get familiarized with the IIWA system from the following documents before operating the robot. 
  - [KUKA Sunrise.OS 1.16, Operating Instructions for End Users](https://indianinstituteofscience-my.sharepoint.com/:b:/g/personal/achuwilson_iisc_ac_in/EV4iYsOWqzJDo67tXQCS5RkBYui1geiQtkUp61vTxEKwrA) 
- - [KUKA Sunrise Cabinet Operating Instructions](https://indianinstituteofscience-my.sharepoint.com/:b:/g/personal/achuwilson_iisc_ac_in/Edw4l1pf6npHoR7z2O2gx-IB9v7VA7hakrdIowpydrake - IIWA manipulator DocumentationxQbYPMbA?e=wyLi8R)
+ - [KUKA Sunrise Cabinet Operating Instructions](https://indianinstituteofscience-my.sharepoint.com/:b:/g/personal/achuwilson_iisc_ac_in/Edw4l1pf6npHoR7z2O2gx-IB9v7VA7hakrdIowxQbYPMbA?e=wyLi8R)
  - [System Software KUKA Sunrise.OS 1.16, KUKA Sunrise.Workbench 1.16, Operating and Programming Instructions for System Integrators](https://indianinstituteofscience-my.sharepoint.com/:b:/g/personal/achuwilson_iisc_ac_in/ETb2S5FZac5DiL733qOmhicB3BOZzJFAMyjdIQaC3mI6rA?e=9Ne5Gq). This document has Java API documentation
 
 NOTE: the linked documents could not be shared publicly as it would violate Kuka's Copyright notice and require IISc login. You could also create a free account on [Kuka Xpert](https://xpert.kuka.com) to download these
@@ -97,7 +97,7 @@ Kuka basically provides the following two methods to program the robot
 
  After developing an application in the Sunrise Workbench, the user has to synchronize it with the Sunrise OS in the controller. This just copies the project files to the controller over the KLI port. 
 
-Download Links
+Download Links ( Require IISc login)
  - [Kuka Sunrise Workbench v1.16](https://indianinstituteofscience-my.sharepoint.com/:u:/g/personal/achuwilson_iisc_ac_in/EVTSc15X_GRIlWSK5q1Tb30Bb0Yqsdy8eesSHTUHCa5uRg?e=tj55YR)
  - [FRI Addon](https://indianinstituteofscience-my.sharepoint.com/:u:/g/personal/achuwilson_iisc_ac_in/EXaiVwwBq4pKsusDc46TTOQB8VykoFdGvrw-m9PZhETiDA?e=HIVX5J)
  - [SmartServo Addon](https://indianinstituteofscience-my.sharepoint.com/:u:/g/personal/achuwilson_iisc_ac_in/EcM-n6luAApEnvS9MxJgs4YBfm4CiQUMdh_WkRj2hqixMQ?e=tkKpXC)
